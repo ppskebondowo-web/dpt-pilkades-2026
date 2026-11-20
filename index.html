@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal DPT Digital - Desa Kebondowo</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>PORTAL DPT DIGITAL</h1>
+        <p>Sistem Publikasi & Pencarian Data Pemilih Tetap</p>
+    </header>
+
+    <!-- HALAMAN UTAMA (DASHBOARD) -->
+    <main id="home-view">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total TPS</h3>
+                <div class="value" id="total-tps">0</div>
+                <div class="sub">Tersebar di seluruh wilayah</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Pemilih</h3>
+                <div class="value" id="total-voters">0</div>
+                <div class="sub">Pemilih Aktif Terdaftar</div>
+            </div>
+            <div class="stat-card">
+                <h3>Pemilih Laki-Laki</h3>
+                <div class="value text-male" id="total-male">0</div>
+                <div class="sub" id="pct-male">0% dari total</div>
+            </div>
+            <div class="stat-card">
+                <h3>Pemilih Perempuan</h3>
+                <div class="value text-female" id="total-female">0</div>
+                <div class="sub" id="pct-female">0% dari total</div>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="global-search" class="search-input" placeholder="🔍 Cari nama pemilih di seluruh TPS (ketik minimal 3 huruf)...">
+        </div>
+
+        <div id="global-search-results" class="hidden search-results-box">
+            <h3 class="section-subtitle">Hasil Pencarian Pemilih</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nama Lengkap</th>
+                            <th>TPS</th>
+                            <th>Dusun / RT / RW</th>
+                            <th>L/P</th>
+                            <th>Usia</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="global-search-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <h2 class="section-title">Daftar Tempat Pemungutan Suara (TPS)</h2>
+        <div id="loading-indicator" class="loader">Memuat basis data CSV dari GitHub...</div>
+        <div class="tps-grid" id="tps-list"></div>
+    </main>
+
+    <!-- HALAMAN DETAIL TPS -->
+    <section id="tps-detail-view" class="hidden">
+        <button class="btn-back" onclick="showHome()">← Kembali ke Daftar TPS</button>
+        
+        <div class="detail-header">
+            <span class="tps-badge" id="detail-tps-code">TPS 001</span>
+            <h2 id="detail-tps-location">Lokasi TPS</h2>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Pemilih TPS</h3>
+                <div class="value" id="detail-total">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Pemilih Laki-Laki</h3>
+                <div class="value text-male" id="detail-male">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Pemilih Perempuan</h3>
+                <div class="value text-female" id="detail-female">0</div>
+            </div>
+        </div>
+
+        <h3 class="section-muted-title">Distribusi Pemilih Per RT</h3>
+        <div class="rt-grid" id="detail-rt-grid"></div>
+
+        <div class="search-box">
+            <input type="text" id="tps-search" class="search-input" placeholder="🔍 Cari nama pemilih atau filter RT di TPS ini...">
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Lengkap</th>
+                        <th>Usia</th>
+                        <th>L/P</th>
+                        <th>Dusun</th>
+                        <th>RT / RW</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="detail-tbody"></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<!-- MODAL DATA LENGKAP PEMILIH -->
+<div id="voter-modal" class="modal-overlay hidden" onclick="closeModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <h2>IDENTITAS PEMILIH TERDAFTAR</h2>
+        <div id="modal-content"></div>
+        <button class="btn-back btn-modal-close" onclick="document.getElementById('voter-modal').classList.add('hidden')">Tutup</button>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
