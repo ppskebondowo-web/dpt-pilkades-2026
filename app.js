@@ -216,17 +216,47 @@ document.getElementById('global-search').addEventListener('input', (e) => {
 function showVoterModal(v) {
     const modal = document.getElementById('voter-modal');
     const content = document.getElementById('modal-content');
+    
+    // Merapikan format Dusun agar seragam (misal: "DSN. JAMBON" atau "JAMBON" -> "Dusun Jambon")
+    const rawDusun = (v.DUSUN || '').replace(/^(DSN\.?|DUSUN)\s*/i, '').trim();
+    const formattedDusun = rawDusun 
+        ? 'Dusun ' + rawDusun.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) 
+        : '';
+    const alamatLengkap = `${formattedDusun} RT ${v.RT} RW ${v.RW}`.trim();
+
     content.innerHTML = `
-        <div class="detail-row"><span>Nama Lengkap</span><span>${v.NAMA}</span></div>
-        <div class="detail-row"><span>Lokasi TPS</span><span style="color:var(--accent-cyan);">${v.TPS_NAMA} - ${v.TPS_TEMPAT}</span></div>
-        <div class="detail-row"><span>Jenis Kelamin</span><span>${v['L/P'] === 'L' ? 'Laki-Laki' : 'Perempuan'}</span></div>
-        <div class="detail-row"><span>Usia</span><span>${v.USIA} Tahun</span></div>
-        <div class="detail-row"><span>Dusun</span><span>${v.DUSUN}</span></div>
-        <div class="detail-row"><span>RT / RW</span><span>RT ${v.RT} / RW ${v.RW}</span></div>
-        <div class="detail-row"><span>Status DPT</span><span><span class="badge-aktif">${v.KET}</span></span></div>
+        <div class="detail-row">
+            <span>TPS</span>
+            <span style="color:var(--accent-cyan);">${v.TPS_NAMA} - ${v.TPS_TEMPAT}</span>
+        </div>
+        <div class="detail-row">
+            <span>Nama Lengkap</span>
+            <span>${v.NAMA}</span>
+        </div>
+        <div class="detail-row">
+            <span>Jenis Kelamin</span>
+            <span>${v['L/P'] === 'L' ? 'Laki-Laki' : 'Perempuan'}</span>
+        </div>
+        <div class="detail-row">
+            <span>Usia</span>
+            <span>${v.USIA} Tahun</span>
+        </div>
+        <div class="detail-row">
+            <span>Alamat</span>
+            <span>${alamatLengkap}</span>
+        </div>
+        <div class="detail-row">
+            <span>Nomor DPT</span>
+            <span>${v.NO}</span>
+        </div>
+        <div class="detail-row">
+            <span>Status DPT</span>
+            <span><span class="badge-aktif">${v.KET}</span></span>
+        </div>
     `;
     modal.classList.remove('hidden');
 }
+
 
 function closeModal(e) {
     if (e.target.id === 'voter-modal') {
