@@ -1,13 +1,13 @@
 :root {
-    --bg-dark: #04100c;
-    --card-bg: rgba(9, 28, 22, 0.72);
-    --card-border: rgba(16, 185, 129, 0.28);
-    --accent-cyan: #10b981;
-    --accent-purple: #f59e0b;
-    --text-main: #f0fdf4;
-    --text-muted: #9ca3af;
-    --male-color: #34d399;
-    --female-color: #fbbf44;
+    --bg-dark: #140507;
+    --card-bg: rgba(36, 10, 14, 0.75);
+    --card-border: rgba(244, 63, 94, 0.3);
+    --accent-cyan: #fb7185;
+    --accent-purple: #fbbf24;
+    --text-main: #fff1f2;
+    --text-muted: #fda4af;
+    --male-color: #38bdf8;
+    --female-color: #fbbf24;
 }
 
 * {
