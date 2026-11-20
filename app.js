@@ -7,7 +7,7 @@ let currentTpsVoters = [];
 function parseCSV(text) {
     const lines = text.trim().split(/\r?\n/);
     if (lines.length < 2) return [];
-    const headers = lines[0].split(';').map(h => h.trim().toUpperCase());
+    const headers = lines.split(';').map(h => h.trim().toUpperCase());
     
     return lines.slice(1).map(line => {
         const values = line.split(';');
@@ -17,6 +17,18 @@ function parseCSV(text) {
         });
         return obj;
     });
+}
+
+function formatAlamat(v) {
+    const rawDusun = (v.DUSUN || '').trim();
+    const dusunTitleCase = rawDusun
+        ? rawDusun.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())
+        : '';
+    
+    const rt = (v.RT || '').padStart(3, '0');
+    const rw = (v.RW || '').padStart(3, '0');
+    
+    return `${dusunTitleCase} RT ${rt} RW ${rw}`.trim();
 }
 
 async function initApp() {
@@ -155,17 +167,19 @@ function renderTpsTable(data) {
         return;
     }
 
-    tbody.innerHTML = data.map((v, i) => `
+    tbody.innerHTML = data.map((v, i) => {
+        const dusunTampil = (v.DUSUN || '').trim().toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+        return `
         <tr style="cursor:pointer;" onclick='showVoterModal(${JSON.stringify(v).replace(/'/g, "&#39;")})'>
             <td>${v.NO || i + 1}</td>
             <td><strong>${v.NAMA}</strong></td>
             <td>${v.USIA} Thn</td>
             <td><span class="${v['L/P'] === 'L' ? 'badge-l' : 'badge-p'}">${v['L/P']}</span></td>
-            <td>${v.DUSUN}</td>
+            <td>${dusunTampil}</td>
             <td>RT ${v.RT} / RW ${v.RW}</td>
             <td><span class="badge-aktif">${v.KET}</span></td>
         </tr>
-    `).join('');
+    `}).join('');
 }
 
 document.getElementById('tps-search').addEventListener('input', (e) => {
@@ -200,7 +214,7 @@ document.getElementById('global-search').addEventListener('input', (e) => {
         <tr>
             <td><strong>${v.NAMA}</strong></td>
             <td><span class="tps-badge" style="font-size:0.75rem;">${v.TPS_NAMA}</span></td>
-            <td>${v.DUSUN} (RT ${v.RT}/RW ${v.RW})</td>
+            <td>${formatAlamat(v)}</td>
             <td><span class="${v['L/P'] === 'L' ? 'badge-l' : 'badge-p'}">${v['L/P']}</span></td>
             <td>${v.USIA} Thn</td>
             <td>
@@ -216,13 +230,6 @@ document.getElementById('global-search').addEventListener('input', (e) => {
 function showVoterModal(v) {
     const modal = document.getElementById('voter-modal');
     const content = document.getElementById('modal-content');
-    
-    // Merapikan format Dusun agar seragam (misal: "DSN. JAMBON" atau "JAMBON" -> "Dusun Jambon")
-    const rawDusun = (v.DUSUN || '').replace(/^(DSN\.?|DUSUN)\s*/i, '').trim();
-    const formattedDusun = rawDusun 
-        ? 'Dusun ' + rawDusun.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) 
-        : '';
-    const alamatLengkap = `${formattedDusun} RT ${v.RT} RW ${v.RW}`.trim();
 
     content.innerHTML = `
         <div class="detail-row">
@@ -243,7 +250,7 @@ function showVoterModal(v) {
         </div>
         <div class="detail-row">
             <span>Alamat</span>
-            <span>${alamatLengkap}</span>
+            <span>${formatAlamat(v)}</span>
         </div>
         <div class="detail-row">
             <span>Nomor DPT</span>
@@ -256,7 +263,6 @@ function showVoterModal(v) {
     `;
     modal.classList.remove('hidden');
 }
-
 
 function closeModal(e) {
     if (e.target.id === 'voter-modal') {
