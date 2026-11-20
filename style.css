@@ -1,13 +1,13 @@
 :root {
-    --bg-dark: #140507;
-    --card-bg: rgba(36, 10, 14, 0.75);
-    --card-border: rgba(244, 63, 94, 0.3);
-    --accent-cyan: #fb7185;
-    --accent-purple: #fbbf24;
-    --text-main: #fff1f2;
-    --text-muted: #fda4af;
+    --bg-dark: #090d16;
+    --card-bg: rgba(17, 25, 40, 0.78);
+    --card-border: rgba(56, 189, 248, 0.3);
+    --accent-cyan: #38bdf8;
+    --accent-purple: #818cf8;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
     --male-color: #38bdf8;
-    --female-color: #fbbf24;
+    --female-color: #f472b6;
 }
 
 * {
@@ -19,8 +19,8 @@
 body {
     background-color: var(--bg-dark);
     background-image: 
-        radial-gradient(circle at 12% 18%, rgba(16, 185, 129, 0.12), transparent 38%),
-        radial-gradient(circle at 88% 82%, rgba(245, 158, 11, 0.09), transparent 38%);
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.12), transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(129, 140, 248, 0.12), transparent 40%);
     color: var(--text-main);
     font-family: 'Plus Jakarta Sans', sans-serif;
     min-height: 100vh;
@@ -109,7 +109,7 @@ header p {
     padding: 1rem 1.25rem;
     border-radius: 12px;
     border: 1px solid var(--card-border);
-    background: rgba(6, 20, 16, 0.9);
+    background: rgba(15, 23, 42, 0.92);
     color: var(--text-main);
     font-size: 1rem;
     outline: none;
@@ -118,7 +118,7 @@ header p {
 
 .search-input:focus {
     border-color: var(--accent-cyan);
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
 }
 
 .search-results-box { margin-bottom: 2.5rem; }
@@ -147,7 +147,7 @@ header p {
 .tps-card:hover {
     transform: translateY(-4px);
     border-color: var(--accent-purple);
-    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.18);
+    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.18);
 }
 
 .tps-header {
@@ -159,13 +159,13 @@ header p {
 
 .tps-badge {
     font-family: 'Orbitron', sans-serif;
-    background: rgba(16, 185, 129, 0.15);
+    background: rgba(56, 189, 248, 0.15);
     color: var(--accent-cyan);
     padding: 0.3rem 0.75rem;
     border-radius: 8px;
     font-size: 0.9rem;
     font-weight: 700;
-    border: 1px solid rgba(16, 185, 129, 0.35);
+    border: 1px solid rgba(56, 189, 248, 0.35);
 }
 
 .tps-location {
@@ -186,7 +186,7 @@ header p {
 .hidden { display: none !important; }
 
 .btn-back {
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.08);
     color: var(--text-main);
     border: 1px solid var(--card-border);
     padding: 0.6rem 1.2rem;
@@ -202,7 +202,7 @@ header p {
 
 .btn-back:hover {
     background: var(--accent-cyan);
-    color: #022c22;
+    color: #090d16;
 }
 
 .detail-header { margin-bottom: 1.5rem; }
@@ -216,8 +216,8 @@ header p {
 }
 
 .rt-card {
-    background: rgba(6, 28, 22, 0.65);
-    border: 1px solid rgba(16, 185, 129, 0.22);
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(56, 189, 248, 0.22);
     border-radius: 12px;
     padding: 1rem;
     text-align: center;
@@ -250,7 +250,7 @@ th, td {
 }
 
 th {
-    background: rgba(4, 18, 14, 0.95);
+    background: rgba(9, 13, 22, 0.95);
     color: var(--accent-cyan);
     font-weight: 600;
     text-transform: uppercase;
@@ -258,13 +258,13 @@ th {
     letter-spacing: 0.5px;
 }
 
-tr:hover td { background: rgba(16, 185, 129, 0.06); }
+tr:hover td { background: rgba(56, 189, 248, 0.06); }
 
 .badge-l { color: var(--male-color); font-weight: 600; }
 .badge-p { color: var(--female-color); font-weight: 600; }
 .badge-aktif {
-    background: rgba(16, 185, 129, 0.18);
-    color: #34d399;
+    background: rgba(56, 189, 248, 0.18);
+    color: #7dd3fc;
     padding: 0.2rem 0.6rem;
     border-radius: 6px;
     font-size: 0.75rem;
@@ -284,13 +284,13 @@ tr:hover td { background: rgba(16, 185, 129, 0.06); }
 }
 
 .modal-card {
-    background: #061813;
+    background: #0f172a;
     border: 1px solid var(--accent-cyan);
     border-radius: 20px;
     max-width: 450px;
     width: 100%;
     padding: 2rem;
-    box-shadow: 0 0 30px rgba(16, 185, 129, 0.28);
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.28);
 }
 
 .modal-card h2 {
