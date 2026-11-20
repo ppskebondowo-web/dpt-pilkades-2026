@@ -7,7 +7,7 @@ let currentTpsVoters = [];
 function parseCSV(text) {
     const lines = text.trim().split(/\r?\n/);
     if (lines.length < 2) return [];
-    const headers = lines.split(';').map(h => h.trim().toUpperCase());
+    const headers = lines[0].split(';').map(h => h.trim().toUpperCase());
     
     return lines.slice(1).map(line => {
         const values = line.split(';');
