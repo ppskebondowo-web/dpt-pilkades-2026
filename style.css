@@ -1,13 +1,13 @@
 :root {
-    --bg-dark: #060913;
-    --card-bg: rgba(16, 24, 48, 0.65);
-    --card-border: rgba(56, 189, 248, 0.25);
-    --accent-cyan: #00f0ff;
-    --accent-purple: #8b5cf6;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --male-color: #38bdf8;
-    --female-color: #f472b6;
+    --bg-dark: #04100c;
+    --card-bg: rgba(9, 28, 22, 0.72);
+    --card-border: rgba(16, 185, 129, 0.28);
+    --accent-cyan: #10b981;      /* Hijau Emerald Futuristik */
+    --accent-purple: #f59e0b;    /* Aksen Emas Hangat */
+    --text-main: #f0fdf4;
+    --text-muted: #9ca3af;
+    --male-color: #34d399;       /* Hijau Mint Cerah */
+    --female-color: #fbbf24;     /* Kuning Emas Lembut */
 }
 
 * {
@@ -19,8 +19,8 @@
 body {
     background-color: var(--bg-dark);
     background-image: 
-        radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.08), transparent 35%),
-        radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.1), transparent 35%);
+        radial-gradient(circle at 12% 18%, rgba(16, 185, 129, 0.12), transparent 38%),
+        radial-gradient(circle at 88% 82%, rgba(245, 158, 11, 0.09), transparent 38%);
     color: var(--text-main);
     font-family: 'Plus Jakarta Sans', sans-serif;
     min-height: 100vh;
@@ -109,7 +109,7 @@ header p {
     padding: 1rem 1.25rem;
     border-radius: 12px;
     border: 1px solid var(--card-border);
-    background: rgba(15, 23, 42, 0.85);
+    background: rgba(6, 20, 16, 0.9);
     color: var(--text-main);
     font-size: 1rem;
     outline: none;
@@ -118,7 +118,7 @@ header p {
 
 .search-input:focus {
     border-color: var(--accent-cyan);
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
 }
 
 .search-results-box { margin-bottom: 2.5rem; }
@@ -146,8 +146,8 @@ header p {
 
 .tps-card:hover {
     transform: translateY(-4px);
-    border-color: var(--accent-cyan);
-    box-shadow: 0 10px 25px rgba(0, 240, 255, 0.15);
+    border-color: var(--accent-purple);
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.18);
 }
 
 .tps-header {
@@ -159,13 +159,13 @@ header p {
 
 .tps-badge {
     font-family: 'Orbitron', sans-serif;
-    background: rgba(0, 240, 255, 0.12);
+    background: rgba(16, 185, 129, 0.15);
     color: var(--accent-cyan);
     padding: 0.3rem 0.75rem;
     border-radius: 8px;
     font-size: 0.9rem;
     font-weight: 700;
-    border: 1px solid rgba(0, 240, 255, 0.3);
+    border: 1px solid rgba(16, 185, 129, 0.35);
 }
 
 .tps-location {
@@ -186,7 +186,7 @@ header p {
 .hidden { display: none !important; }
 
 .btn-back {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.07);
     color: var(--text-main);
     border: 1px solid var(--card-border);
     padding: 0.6rem 1.2rem;
@@ -202,7 +202,7 @@ header p {
 
 .btn-back:hover {
     background: var(--accent-cyan);
-    color: #000;
+    color: #022c22;
 }
 
 .detail-header { margin-bottom: 1.5rem; }
@@ -216,15 +216,15 @@ header p {
 }
 
 .rt-card {
-    background: rgba(30, 41, 59, 0.5);
-    border: 1px solid rgba(148, 163, 184, 0.2);
+    background: rgba(6, 28, 22, 0.65);
+    border: 1px solid rgba(16, 185, 129, 0.22);
     border-radius: 12px;
     padding: 1rem;
     text-align: center;
 }
 
 .rt-card h4 {
-    color: var(--accent-cyan);
+    color: var(--accent-purple);
     font-family: 'Orbitron', sans-serif;
     font-size: 0.95rem;
     margin-bottom: 0.35rem;
@@ -250,7 +250,7 @@ th, td {
 }
 
 th {
-    background: rgba(15, 23, 42, 0.9);
+    background: rgba(4, 18, 14, 0.95);
     color: var(--accent-cyan);
     font-weight: 600;
     text-transform: uppercase;
@@ -258,12 +258,12 @@ th {
     letter-spacing: 0.5px;
 }
 
-tr:hover td { background: rgba(0, 240, 255, 0.04); }
+tr:hover td { background: rgba(16, 185, 129, 0.06); }
 
 .badge-l { color: var(--male-color); font-weight: 600; }
 .badge-p { color: var(--female-color); font-weight: 600; }
 .badge-aktif {
-    background: rgba(16, 185, 129, 0.15);
+    background: rgba(16, 185, 129, 0.18);
     color: #34d399;
     padding: 0.2rem 0.6rem;
     border-radius: 6px;
@@ -274,7 +274,7 @@ tr:hover td { background: rgba(0, 240, 255, 0.04); }
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.78);
     backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
@@ -284,18 +284,18 @@ tr:hover td { background: rgba(0, 240, 255, 0.04); }
 }
 
 .modal-card {
-    background: #0f172a;
+    background: #061813;
     border: 1px solid var(--accent-cyan);
     border-radius: 20px;
     max-width: 450px;
     width: 100%;
     padding: 2rem;
-    box-shadow: 0 0 30px rgba(0, 240, 255, 0.25);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.28);
 }
 
 .modal-card h2 {
     font-family: 'Orbitron', sans-serif;
-    color: var(--accent-cyan);
+    color: var(--accent-purple);
     margin-bottom: 1rem;
     font-size: 1.25rem;
 }
