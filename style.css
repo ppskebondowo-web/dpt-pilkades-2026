@@ -324,3 +324,64 @@ tr:hover td { background: rgba(16, 185, 129, 0.06); }
     color: var(--accent-cyan);
     font-family: 'Orbitron', sans-serif;
 }
+/* Perbaikan Kerapian Modal Identitas di Layar HP */
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem; /* Memberi jarak pasti antara label kiri dan isi kanan */
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.9rem;
+}
+
+.detail-row span:first-child {
+    color: var(--text-muted);
+    min-width: 105px; /* Lebar label kiri seragam */
+    flex-shrink: 0;   /* Mencegah label kiri terhimpit teks panjang */
+}
+
+.detail-row span:last-child {
+    font-weight: 600;
+    text-align: right;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+/* Penyesuaian khusus layar HP Android (lebar di bawah 480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 1.25rem 0.9rem;
+    }
+
+    header h1 {
+        font-size: 1.45rem;
+        letter-spacing: 1px;
+    }
+
+    .modal-card {
+        padding: 1.35rem 1.15rem;
+        border-radius: 16px;
+    }
+
+    .modal-card h2 {
+        font-size: 1.05rem;
+        line-height: 1.35;
+        margin-bottom: 0.85rem;
+    }
+
+    .detail-row {
+        font-size: 0.85rem;
+        padding: 0.6rem 0;
+    }
+
+    .detail-row span:first-child {
+        min-width: 95px;
+    }
+
+    /* Perkecil padding tabel agar lebih muat di layar HP */
+    th, td {
+        padding: 0.75rem 0.6rem;
+        font-size: 0.82rem;
+    }
+}
