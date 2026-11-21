@@ -3,6 +3,7 @@ const MASTER_TPS_URL = 'data/LOKASI.csv';
 let tpsData = [];
 let allVoters = [];
 let currentTpsVoters = [];
+let namaPemilihAktif = "";
 
 function parseCSV(text) {
     const lines = text.trim().split(/\r?\n/);
@@ -227,23 +228,12 @@ document.getElementById('global-search').addEventListener('input', (e) => {
     `).join('');
 });
 
-let pesanAktifWA = "";
-
 function showVoterModal(v) {
     const modal = document.getElementById('voter-modal');
     const content = document.getElementById('modal-content');
     const alamat = formatAlamat(v);
     const jk = v['L/P'] === 'L' ? 'Laki-Laki' : 'Perempuan';
-
-    pesanAktifWA = "*IDENTITAS PEMILIH TERDAFTAR*\n" +
-                   "📍 *" + v.TPS_NAMA + "* (" + v.TPS_TEMPAT + ")\n\n" +
-                   "• Nama: *" + v.NAMA + "*\n" +
-                   "• Jenis Kelamin: " + jk + "\n" +
-                   "• Usia: " + v.USIA + " Tahun\n" +
-                   "• Alamat: " + alamat + "\n" +
-                   "• Nomor DPT: *" + v.NO + "*\n" +
-                   "• Status: " + v.KET + "\n\n" +
-                   "Cek data pemilih di: " + window.location.href;
+    namaPemilihAktif = v.NAMA || "Pemilih";
 
     content.innerHTML = `
         <div class="modal-tps-header">
@@ -274,8 +264,8 @@ function showVoterModal(v) {
             <span>Status DPT</span>
             <span><span class="badge-aktif">${v.KET}</span></span>
         </div>
-        <div class="modal-actions">
-            <button type="button" class="btn-wa" onclick="bagikanKeWA()">📲 Bagikan WA</button>
+        <div id="modal-btn-group" class="modal-actions">
+            <button type="button" id="btn-ss" class="btn-wa" onclick="bagikanScreenshot()">📸 Bagikan Kartu</button>
             <button type="button" class="btn-back btn-modal-close" onclick="document.getElementById('voter-modal').classList.add('hidden')">Tutup</button>
         </div>
     `;
@@ -283,23 +273,51 @@ function showVoterModal(v) {
     modal.classList.remove('hidden');
 }
 
-function bagikanKeWA() {
-    if (!pesanAktifWA) return;
+async function bagikanScreenshot() {
+    const kartu = document.getElementById('kartu-identitas-box');
+    const btnGroup = document.getElementById('modal-btn-group');
+    const btnSs = document.getElementById('btn-ss');
     
-    // Gunakan fitur Share bawaan HP Android jika tersedia (paling stabil)
-    if (navigator.share) {
-        navigator.share({
-            title: 'Identitas Pemilih Terdaftar',
-            text: pesanAktifWA
-        }).catch(() => {});
-    } else {
-        // Cadangan untuk komputer/laptop
-        const waUrl = "https://whatsapp.com" + encodeURIComponent(pesanAktifWA);
-        window.location.href = waUrl;
+    if (!kartu || typeof html2canvas === 'undefined') {
+        alert('Fitur screenshot sedang dimuat, coba sesaat lagi.');
+        return;
+    }
+
+    btnSs.textContent = '⏳ Memproses...';
+    if (btnGroup) btnGroup.style.display = 'none';
+
+    try {
+        const canvas = await html2canvas(kartu, {
+            scale: 2,
+            backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--modal-bg').trim() || '#0f172a',
+            useCORS: true
+        });
+
+        if (btnGroup) btnGroup.style.display = 'flex';
+        btnSs.textContent = '📸 Bagikan Kartu';
+
+        canvas.toBlob(async (blob) => {
+            const fileName = 'Kartu_DPT_' + namaPemilihAktif.replace(/\s+/g, '_') + '.png';
+            const file = new File([blob], fileName, { type: 'image/png' });
+
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                    title: 'Kartu Identitas DPT - ' + namaPemilihAktif
+                });
+            } else {
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+        }, 'image/png');
+    } catch (err) {
+        if (btnGroup) btnGroup.style.display = 'flex';
+        btnSs.textContent = '📸 Bagikan Kartu';
+        alert('Gagal membuat gambar kartu.');
     }
 }
-
-
 
 function closeModal(e) {
     if (e.target.id === 'voter-modal') {
