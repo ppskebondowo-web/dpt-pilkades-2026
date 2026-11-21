@@ -232,14 +232,24 @@ document.getElementById('global-search').addEventListener('input', (e) => {
     const q = e.target.value.trim().toLowerCase();
     const resultBox = document.getElementById('global-search-results');
     const tbody = document.getElementById('global-search-tbody');
+    const countBadge = document.getElementById('global-search-count');
 
     if (q.length < 3) {
         resultBox.classList.add('hidden');
         return;
     }
 
-    const matches = allVoters.filter(v => v.NAMA.toLowerCase().includes(q)).slice(0, 50);
+    // Hitung semua kecocokan terlebih dahulu sebelum dibatasi tampilannya
+    const allMatches = allVoters.filter(v => v.NAMA.toLowerCase().includes(q));
+    const matches = allMatches.slice(0, 100);
+    
     resultBox.classList.remove('hidden');
+
+    if (countBadge) {
+        countBadge.textContent = allMatches.length > 100 
+            ? `(Menampilkan 100 dari ${allMatches.length} ditemukan)` 
+            : `(${allMatches.length} ditemukan)`;
+    }
 
     if (matches.length === 0) {
         tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">Nama pemilih "${e.target.value}" tidak ditemukan.</td></tr>`;
@@ -262,6 +272,7 @@ document.getElementById('global-search').addEventListener('input', (e) => {
         </tr>
     `).join('');
 });
+
 function showVoterModal(v) {
     const modal = document.getElementById('voter-modal');
     const content = document.getElementById('modal-content');
