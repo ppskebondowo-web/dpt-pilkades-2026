@@ -230,6 +230,8 @@ document.getElementById('global-search').addEventListener('input', (e) => {
 function showVoterModal(v) {
     const modal = document.getElementById('voter-modal');
     const content = document.getElementById('modal-content');
+    const alamat = formatAlamat(v);
+    const jk = v['L/P'] === 'L' ? 'Laki-Laki' : 'Perempuan';
 
     content.innerHTML = `
         <div class="modal-tps-header">
@@ -242,7 +244,7 @@ function showVoterModal(v) {
         </div>
         <div class="detail-row">
             <span>Jenis Kelamin</span>
-            <span>${v['L/P'] === 'L' ? 'Laki-Laki' : 'Perempuan'}</span>
+            <span>${jk}</span>
         </div>
         <div class="detail-row">
             <span>Usia</span>
@@ -250,7 +252,7 @@ function showVoterModal(v) {
         </div>
         <div class="detail-row">
             <span>Alamat</span>
-            <span>${formatAlamat(v)}</span>
+            <span>${alamat}</span>
         </div>
         <div class="detail-row">
             <span>Nomor DPT</span>
@@ -261,6 +263,21 @@ function showVoterModal(v) {
             <span><span class="badge-aktif">${v.KET}</span></span>
         </div>
     `;
+
+    // Fungsi tombol Bagikan ke WhatsApp
+    document.getElementById('btn-share-wa').onclick = () => {
+        const pesan = `*IDENTITAS PEMILIH TERDAFTAR*\n` +
+                      `📍 *${v.TPS_NAMA}* (${v.TPS_TEMPAT})\n\n` +
+                      `• Nama: *${v.NAMA}*\n` +
+                      `• Jenis Kelamin: ${jk}\n` +
+                      `• Usia: ${v.USIA} Tahun\n` +
+                      `• Alamat: ${alamat}\n` +
+                      `• Nomor DPT: *${v.NO}*\n` +
+                      `• Status: ${v.KET}\n\n` +
+                      `_Cek data pemilih di: ${window.location.href}_`;
+        window.open(`https://wa.me{encodeURIComponent(pesan)}`, '_blank');
+    };
+
     modal.classList.remove('hidden');
 }
 
