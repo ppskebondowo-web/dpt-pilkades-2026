@@ -345,13 +345,13 @@ async function bagikanScreenshot() {
 
         // Judul utama
         ctx.fillStyle = titleColor;
-        ctx.font = 'bold 28px sans-serif';
+        ctx.font = 'bold 36px sans-serif';
         ctx.textAlign = 'left';
         ctx.fillText('IDENTITAS PEMILIH TERDAFTAR', 52, 85);
 
         // Info TPS
         ctx.fillStyle = accentColor;
-        ctx.font = 'bold 26px sans-serif';
+        ctx.font = 'bold 30px sans-serif';
         ctx.fillText(tpsTitle, 52, 145);
         ctx.font = '600 22px sans-serif';
         ctx.fillText(tpsLoc, 52, 180);
@@ -370,7 +370,7 @@ async function bagikanScreenshot() {
 
             // Label kiri
             ctx.fillStyle = labelColor;
-            ctx.font = '500 22px sans-serif';
+            ctx.font = '500 24px sans-serif';
             ctx.textAlign = 'left';
             ctx.fillText(r.label, 52, y);
 
