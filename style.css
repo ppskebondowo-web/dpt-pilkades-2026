@@ -71,7 +71,7 @@ body {
 header {
     text-align: center;
     margin-bottom: 2.5rem;
-    padding-top: 1.5rem; /* Memberi ruang aman di atas judul agar tidak tertutup tombol mengambang di HP */
+    padding-top: 1.75rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--card-border);
 }
@@ -91,27 +91,26 @@ header p {
     font-size: 0.95rem;
 }
 
-/* Tombol Mengambang di Pojok Kanan Atas */
 .btn-theme {
     position: fixed;
-    top: 1rem;
-    right: 1rem;
+    top: 0.85rem;
+    right: 0.85rem;
     z-index: 40;
     background: var(--card-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     color: var(--text-main);
     border: 1px solid var(--card-border);
-    padding: 0.5rem 1rem;
+    padding: 0.45rem 0.95rem;
     border-radius: 999px;
     cursor: pointer;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.22);
     transition: all 0.25s ease;
 }
 
@@ -357,15 +356,34 @@ tr:hover td { background: var(--hover-row); }
     border-radius: 20px;
     max-width: 450px;
     width: 100%;
-    padding: 2rem;
+    padding: 1.75rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
 }
 
 .modal-card h2 {
     font-family: 'Orbitron', sans-serif;
     color: var(--accent-purple);
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
+    margin-bottom: 0.85rem;
+    font-size: 1.15rem;
+}
+
+.modal-tps-header {
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.25rem;
+}
+
+.modal-tps-title {
+    color: var(--accent-cyan);
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.35;
+}
+
+.modal-tps-loc {
+    color: var(--accent-cyan);
+    font-weight: 600;
+    font-size: 0.92rem;
+    line-height: 1.35;
 }
 
 .detail-row {
@@ -391,11 +409,40 @@ tr:hover td { background: var(--hover-row); }
     line-height: 1.4;
 }
 
-.btn-modal-close {
-    width: 100%;
-    justify-content: center;
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
     margin-top: 1.5rem;
+}
+
+.modal-actions .btn-modal-close {
+    margin-top: 0;
     margin-bottom: 0;
+    flex: 1;
+    justify-content: center;
+}
+
+.btn-wa {
+    flex: 1.3;
+    background: #10b981;
+    color: #ffffff;
+    border: none;
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.btn-wa:hover {
+    background: #059669;
+    transform: translateY(-1px);
 }
 
 .loader {
@@ -410,22 +457,17 @@ tr:hover td { background: var(--hover-row); }
         padding: 1.25rem 0.9rem;
     }
 
-    .header-bar {
-        align-items: flex-start;
+    header {
+        padding-top: 2.25rem;
     }
 
     header h1 {
-        font-size: 1.3rem;
+        font-size: 1.35rem;
         letter-spacing: 1px;
     }
 
     header p {
-        font-size: 0.8rem;
-    }
-
-    .btn-theme {
-        padding: 0.45rem 0.8rem;
-        font-size: 0.78rem;
+        font-size: 0.82rem;
     }
 
     .modal-card {
@@ -434,9 +476,8 @@ tr:hover td { background: var(--hover-row); }
     }
 
     .modal-card h2 {
-        font-size: 1.05rem;
+        font-size: 1rem;
         line-height: 1.35;
-        margin-bottom: 0.85rem;
     }
 
     .detail-row {
@@ -451,59 +492,5 @@ tr:hover td { background: var(--hover-row); }
     th, td {
         padding: 0.75rem 0.6rem;
         font-size: 0.82rem;
-    }
-
-    /* Sub-header TPS di dalam Kartu Identitas Pemilih */
-    .modal-tps-header {
-        margin-bottom: 1.15rem;
-        padding-bottom: 0.25rem;
-    }
-
-    .modal-tps-title {
-        color: var(--accent-cyan);
-        font-weight: 700;
-        font-size: 1rem;
-        line-height: 1.35;
-    }
-
-    .modal-tps-loc {
-        color: var(--accent-cyan);
-        font-weight: 600;
-        font-size: 0.95rem;
-        line-height: 1.35;
-    }
-    /* Tombol Aksi Berdampingan di Modal */
-    .modal-actions {
-        display: flex;
-        gap: 0.75rem;
-        margin-top: 1.5rem;
-    }
-
-    .modal-actions .btn-modal-close {
-        margin-top: 0;
-        flex: 1;
-    }
-
-    .btn-wa {
-        flex: 1.3;
-        background: #10b981;
-        color: #ffffff;
-        border: none;
-        padding: 0.65rem 1rem;
-        border-radius: 10px;
-        cursor: pointer;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-weight: 700;
-        font-size: 0.9rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.4rem;
-        transition: background 0.2s, transform 0.2s;
-    }
-
-    .btn-wa:hover {
-        background: #059669;
-        transform: translateY(-1px);
     }
 }
