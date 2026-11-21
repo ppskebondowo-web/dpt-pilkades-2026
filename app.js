@@ -1,4 +1,5 @@
 const MASTER_TPS_URL = 'data/LOKASI.csv';
+const CACHE_KEY = 'dpt_kebondowo_cache_v1';
 
 let tpsData = [];
 let allVoters = [];
@@ -33,13 +34,33 @@ function formatAlamat(v) {
 }
 
 async function initApp() {
+    const cachedData = localStorage.getItem(CACHE_KEY);
+    if (cachedData) {
+        try {
+            const parsed = JSON.parse(cachedData);
+            tpsData = parsed.tpsData || [];
+            allVoters = parsed.allVoters || [];
+            document.getElementById('loading-indicator').classList.add('hidden');
+            renderDashboard();
+            
+            fetchFreshDataFromGitHub(true);
+            return;
+        } catch (e) {
+            localStorage.removeItem(CACHE_KEY);
+        }
+    }
+
+    await fetchFreshDataFromGitHub(false);
+}
+
+async function fetchFreshDataFromGitHub(isBackgroundUpdate) {
     try {
         const res = await fetch(MASTER_TPS_URL);
         if (!res.ok) throw new Error('Gagal memuat data/LOKASI.csv');
         const csvText = await res.text();
-        tpsData = parseCSV(csvText);
+        const freshTpsData = parseCSV(csvText);
 
-        const fetchPromises = tpsData.map(async (tps) => {
+        const fetchPromises = freshTpsData.map(async (tps) => {
             const fileName = `${tps.TPS.trim()}.csv`;
             try {
                 const vRes = await fetch(`data/${encodeURIComponent(fileName)}`);
@@ -57,20 +78,33 @@ async function initApp() {
         });
 
         const results = await Promise.all(fetchPromises);
+        const freshAllVoters = [];
         
         results.forEach(item => {
             item.tps.voters = item.voters;
-            allVoters.push(...item.voters);
+            freshAllVoters.push(...item.voters);
         });
 
-        document.getElementById('loading-indicator').classList.add('hidden');
-        renderDashboard();
+        try {
+            localStorage.setItem(CACHE_KEY, JSON.stringify({
+                tpsData: freshTpsData,
+                allVoters: freshAllVoters
+            }));
+        } catch (storageErr) {}
+
+        if (!isBackgroundUpdate || freshAllVoters.length !== allVoters.length) {
+            tpsData = freshTpsData;
+            allVoters = freshAllVoters;
+            document.getElementById('loading-indicator').classList.add('hidden');
+            renderDashboard();
+        }
     } catch (err) {
-        document.getElementById('loading-indicator').innerHTML = 
-            `<span style="color:#f87171;">Error: ${err.message}. Pastikan dijalankan melalui GitHub Pages.</span>`;
+        if (!isBackgroundUpdate) {
+            document.getElementById('loading-indicator').innerHTML = 
+                `<span style="color:#f87171;">Error: ${err.message}. Pastikan dijalankan melalui GitHub Pages.</span>`;
+        }
     }
 }
-
 function renderDashboard() {
     const totalTps = tpsData.length;
     const totalVoters = allVoters.length;
@@ -115,6 +149,7 @@ function renderDashboard() {
         tpsListEl.appendChild(card);
     });
 }
+
 function openTpsDetail(index) {
     const tps = tpsData[index];
     currentTpsVoters = tps.voters || [];
@@ -227,7 +262,6 @@ document.getElementById('global-search').addEventListener('input', (e) => {
         </tr>
     `).join('');
 });
-
 function showVoterModal(v) {
     const modal = document.getElementById('voter-modal');
     const content = document.getElementById('modal-content');
@@ -335,7 +369,6 @@ async function bagikanScreenshot() {
         canvas.height = 940;
         const ctx = canvas.getContext('2d');
 
-        // Latar kartu sudut membulat & bingkai tipis
         drawRoundedRect(ctx, 12, 12, canvas.width - 24, canvas.height - 24, 32);
         ctx.fillStyle = bgColor;
         ctx.fill();
@@ -343,20 +376,17 @@ async function bagikanScreenshot() {
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // Judul utama
         ctx.fillStyle = titleColor;
-        ctx.font = 'bold 36px sans-serif';
+        ctx.font = 'bold 28px sans-serif';
         ctx.textAlign = 'left';
         ctx.fillText('IDENTITAS PEMILIH TERDAFTAR', 52, 85);
 
-        // Info TPS
         ctx.fillStyle = accentColor;
-        ctx.font = 'bold 30px sans-serif';
+        ctx.font = 'bold 26px sans-serif';
         ctx.fillText(tpsTitle, 52, 145);
         ctx.font = '600 22px sans-serif';
         ctx.fillText(tpsLoc, 52, 180);
 
-        // Garis & Baris Data
         let y = 250;
         const maxValueWidth = 420;
 
@@ -368,13 +398,11 @@ async function bagikanScreenshot() {
             ctx.lineTo(canvas.width - 52, y - 36);
             ctx.stroke();
 
-            // Label kiri
             ctx.fillStyle = labelColor;
-            ctx.font = '500 24px sans-serif';
+            ctx.font = '500 22px sans-serif';
             ctx.textAlign = 'left';
             ctx.fillText(r.label, 52, y);
 
-            // Isi kanan
             if (r.label === 'Status DPT') {
                 ctx.font = 'bold 19px sans-serif';
                 const textW = ctx.measureText(r.value).width;
@@ -407,7 +435,6 @@ async function bagikanScreenshot() {
             }
         });
 
-        // Footer rata tengah
         ctx.fillStyle = labelColor;
         ctx.font = '18px sans-serif';
         ctx.textAlign = 'center';
