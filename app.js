@@ -276,3 +276,25 @@ function showHome() {
 }
 
 initApp();
+// Pengaturan Tema Gelap & Terang
+function applyTheme(theme) {
+    const btn = document.getElementById('theme-toggle');
+    if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        if (btn) btn.innerHTML = '🌙 Mode Gelap';
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+        if (btn) btn.innerHTML = '☀️ Mode Terang';
+    }
+}
+
+function toggleTheme() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const nextTheme = isLight ? 'dark' : 'light';
+    localStorage.setItem('dpt_theme', nextTheme);
+    applyTheme(nextTheme);
+}
+
+// Jalankan saat halaman dimuat
+applyTheme(localStorage.getItem('dpt_theme') || 'dark');
+
