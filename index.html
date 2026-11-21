@@ -1,137 +1,306 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Pemilih Tetap - Desa Kebondowo</title>
-    <link href="https://googleapis.com" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=15">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DPT Pilkades 2026 - Desa Kebondowo</title>
+<link href="https://googleapis.com" rel="stylesheet">
+<style>
+:root{--bg:#090d16;--card:rgba(17,25,40,.85);--border:rgba(56,189,248,.3);--inp:rgba(15,23,42,.95);--th:rgba(9,13,22,.95);--modal:#0f172a;--line:rgba(255,255,255,.08);--cyan:#38bdf8;--purp:#818cf8;--txt:#f8fafc;--mut:#94a3b8;--l:#38bdf8;--p:#f472b6;--bg-ak:rgba(56,189,248,.18);--tx-ak:#7dd3fc}
+[data-theme="light"]{--bg:#f1f5f9;--card:#fff;--border:#cbd5e1;--inp:#fff;--th:#e2e8f0;--modal:#fff;--line:#e2e8f0;--cyan:#0284c7;--purp:#2563eb;--txt:#0f172a;--mut:#475569;--l:#0369a1;--p:#db2777;--bg-ak:#dcfce7;--tx-ak:#15803d}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;line-height:1.5;transition:.3s}
+.wrap{max-width:1150px;margin:auto;padding:1.5rem 1rem}
+header{text-align:center;padding:1.75rem 0 1.25rem;margin-bottom:2rem;border-bottom:1px solid var(--border)}
+h1{font-family:'Orbitron',sans-serif;font-size:1.6rem;background:linear-gradient(90deg,var(--cyan),var(--purp));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header p{color:var(--mut);font-size:.88rem;margin-top:.25rem}
+.btn-thm{position:fixed;top:.8rem;right:.8rem;z-index:40;background:var(--card);color:var(--txt);border:1px solid var(--border);padding:.45rem .9rem;border-radius:99px;font-weight:600;font-size:.8rem;cursor:pointer;backdrop-filter:blur(10px)}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--cyan),var(--purp))}
+.card h3{font-size:.8rem;color:var(--mut);text-transform:uppercase}
+.val{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:700;margin:.2rem 0}
+.sub{font-size:.78rem;color:var(--cyan)}
+.inp{width:100%;padding:.9rem 1.1rem;border-radius:12px;border:1px solid var(--border);background:var(--inp);color:var(--txt);font-size:.95rem;outline:none;margin-bottom:1.5rem}
+.inp:focus{border-color:var(--cyan)}
+.tps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.tps-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem;cursor:pointer;transition:.2s}
+.tps-item:hover{border-color:var(--purp);transform:translateY(-3px)}
+.badge{font-family:'Orbitron',sans-serif;background:rgba(56,189,248,.15);color:var(--cyan);padding:.25rem .65rem;border-radius:6px;font-size:.85rem;font-weight:700}
+.meta{display:flex;justify-content:space-between;font-size:.82rem;color:var(--mut);border-top:1px solid var(--line);padding-top:.6rem;margin-top:.8rem}
+.tbl-box{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow-x:auto;margin-bottom:2rem}
+table{width:100%;border-collapse:collapse;font-size:.88rem;text-align:left}
+th,td{padding:.85rem;border-bottom:1px solid var(--line)}
+th{background:var(--th);color:var(--cyan);font-size:.78rem;text-transform:uppercase}
+.btn{background:var(--card);color:var(--txt);border:1px solid var(--border);padding:.55rem 1rem;border-radius:9px;cursor:pointer;font-weight:600;font-size:.85rem}
+.rt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.8rem;margin:1rem 0 1.5rem}
+.rt-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.85rem;text-align:center}
+.hid{display:none!important}
+.ak{background:var(--bg-ak);color:var(--tx-ak);padding:.2rem .55rem;border-radius:5px;font-size:.75rem;font-weight:700}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:50;padding:1rem}
+.mod{background:var(--modal);border:1px solid var(--cyan);border-radius:18px;max-width:430px;width:100%;padding:1.5rem}
+.mod h2{font-family:'Orbitron',sans-serif;color:var(--purp);font-size:1.1rem;margin-bottom:.75rem}
+.row{display:flex;justify-content:space-between;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--line);font-size:.88rem}
+.row span:first-child{color:var(--mut);min-width:95px}
+.row span:last-child{font-weight:600;text-align:right}
+.acts{display:flex;gap:.6rem;margin-top:1.25rem}
+.btn-wa{flex:1.3;background:#10b981;color:#fff;border:none;padding:.6rem;border-radius:9px;font-weight:700;cursor:pointer}
+</style>
 </head>
 <body>
+<button id="thm-btn" class="btn-thm" onclick="togThm()">☀️ Mode Terang</button>
+<div class="wrap">
+  <header>
+    <h1>DAFTAR PEMILIH TETAP</h1>
+    <p>PEMILIHAN KEPALA DESA KEBONDOWO TAHUN 2026</p>
+  </header>
 
-<button id="theme-toggle" class="btn-theme" onclick="toggleTheme()" aria-label="Ganti Tema">
-    ☀️ Mode Terang
-</button>
-
-<div class="container">
-    <header>
-        <h1>DAFTAR PEMILIH TETAP</h1>
-        <p>PEMILIHAN KEPALA DESA KEBONDOWO TAHUN 2026</p>
-    </header>
-
-    <!-- HALAMAN UTAMA (DASHBOARD) -->
-    <main id="home-view">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total TPS</h3>
-                <div class="value" id="total-tps">0</div>
-                <div class="sub">Tersebar di seluruh wilayah</div>
-            </div>
-            <div class="stat-card">
-                <h3>Total Pemilih</h3>
-                <div class="value" id="total-voters">0</div>
-                <div class="sub">Pemilih Aktif Terdaftar</div>
-            </div>
-            <div class="stat-card">
-                <h3>Pemilih Laki-Laki</h3>
-                <div class="value text-male" id="total-male">0</div>
-                <div class="sub" id="pct-male">0% dari total</div>
-            </div>
-            <div class="stat-card">
-                <h3>Pemilih Perempuan</h3>
-                <div class="value text-female" id="total-female">0</div>
-                <div class="sub" id="pct-female">0% dari total</div>
-            </div>
-        </div>
-
-        <div class="search-box">
-            <input type="text" id="tps-search" class="search-input" placeholder="🔍 Cari nama pemilih atau filter RT di TPS ini...">
-            <p id="tps-search-count" class="search-count-info"></p>
-        </div>
-
-        <div id="global-search-results" class="hidden search-results-box">
-            <h3 class="section-subtitle">Hasil Pencarian Pemilih <span id="global-search-count" class="search-count-badge"></span></h3>
-            <div class="table-wrapper">
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nama Lengkap</th>
-                            <th>TPS</th>
-                            <th>Alamat</th>
-                            <th>L/P</th>
-                            <th>Usia</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="global-search-tbody"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <h2 class="section-title">Daftar Tempat Pemungutan Suara (TPS)</h2>
-        <div id="loading-indicator" class="loader">Memuat basis data CSV dari GitHub...</div>
-        <div class="tps-grid" id="tps-list"></div>
-    </main>
-
-    <!-- HALAMAN DETAIL TPS -->
-    <section id="tps-detail-view" class="hidden">
-        <button class="btn-back" onclick="showHome()">← Kembali ke Daftar TPS</button>
-        
-        <div class="detail-header">
-            <span class="tps-badge" id="detail-tps-code">TPS 001</span>
-            <h2 id="detail-tps-location">Lokasi TPS</h2>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total Pemilih TPS</h3>
-                <div class="value" id="detail-total">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>Pemilih Laki-Laki</h3>
-                <div class="value text-male" id="detail-male">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>Pemilih Perempuan</h3>
-                <div class="value text-female" id="detail-female">0</div>
-            </div>
-        </div>
-
-        <h3 class="section-muted-title">Distribusi Pemilih Per RT</h3>
-        <div class="rt-grid" id="detail-rt-grid"></div>
-
-        <div class="search-box">
-            <input type="text" id="tps-search" class="search-input" placeholder="🔍 Cari nama pemilih atau filter RT di TPS ini...">
-        </div>
-
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Lengkap</th>
-                        <th>Usia</th>
-                        <th>L/P</th>
-                        <th>Dusun</th>
-                        <th>RT / RW</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="detail-tbody"></tbody>
-            </table>
-        </div>
-    </section>
-</div>
-
-<!-- MODAL DATA LENGKAP PEMILIH -->
-<div id="voter-modal" class="modal-overlay hidden" onclick="closeModal(event)">
-    <div id="kartu-identitas-box" class="modal-card" onclick="event.stopPropagation()">
-        <h2>IDENTITAS PEMILIH TERDAFTAR</h2>
-        <div id="modal-content"></div>
+  <main id="v-home">
+    <div class="grid4">
+      <div class="card"><h3>Total TPS</h3><div class="val" id="t-tps">0</div><div class="sub">Wilayah Desa Kebondowo</div></div>
+      <div class="card"><h3>Total Pemilih</h3><div class="val" id="t-all">0</div><div class="sub">Pemilih Aktif Terdaftar</div></div>
+      <div class="card"><h3>Laki-Laki</h3><div class="val" style="color:var(--l)" id="t-l">0</div><div class="sub" id="p-l">0%</div></div>
+      <div class="card"><h3>Perempuan</h3><div class="val" style="color:var(--p)" id="t-p">0</div><div class="sub" id="p-p">0%</div></div>
     </div>
+
+    <input type="text" id="q-all" class="inp" placeholder="🔍 Cari nama pemilih di seluruh TPS (minimal 3 huruf)...">
+    <div id="res-all" class="hid">
+      <h3 style="color:var(--cyan);margin-bottom:.75rem">Hasil Pencarian <span id="cnt-all" style="color:var(--mut);font-size:.85rem"></span></h3>
+      <div class="tbl-box"><table><thead><tr><th>Nama</th><th>TPS</th><th>Alamat</th><th>L/P</th><th>Usia</th><th>Aksi</th></tr></thead><tbody id="tb-all"></tbody></table></div>
+    </div>
+
+    <h2 style="font-family:'Orbitron',sans-serif;font-size:1.15rem;margin-bottom:1rem">Daftar TPS</h2>
+    <div id="load" style="text-align:center;padding:2rem;color:var(--cyan)">Memuat data pemilih...</div>
+    <div class="tps-grid" id="list-tps"></div>
+  </main>
+
+  <section id="v-tps" class="hid">
+    <button class="btn" style="margin-bottom:1rem" onclick="goHome()">← Kembali</button>
+    <div style="margin-bottom:1.25rem"><span class="badge" id="d-kode">TPS</span><h2 id="d-lok" style="margin-top:.4rem"></h2></div>
+    <div class="grid4">
+      <div class="card"><h3>Total Pemilih</h3><div class="val" id="d-all">0</div></div>
+      <div class="card"><h3>Laki-Laki</h3><div class="val" style="color:var(--l)" id="d-l">0</div></div>
+      <div class="card"><h3>Perempuan</h3><div class="val" style="color:var(--p)" id="d-p">0</div></div>
+    </div>
+    <h3 style="color:var(--mut);font-size:1rem">Rincian Per RT</h3>
+    <div class="rt-grid" id="d-rt"></div>
+    <input type="text" id="q-tps" class="inp" style="margin-bottom:.4rem" placeholder="🔍 Cari nama atau filter RT di TPS ini...">
+    <p id="cnt-tps" style="font-size:.82rem;color:var(--cyan);margin-bottom:1rem"></p>
+    <div class="tbl-box"><table><thead><tr><th>No</th><th>Nama</th><th>Usia</th><th>L/P</th><th>Dusun</th><th>RT/RW</th><th>Status</th></tr></thead><tbody id="tb-tps"></tbody></table></div>
+  </section>
 </div>
 
-<script src="app.js?v=21"></script>
+<div id="modal" class="ov hid" onclick="if(event.target.id==='modal')this.classList.add('hid')">
+  <div class="mod"><h2 id="m-head">IDENTITAS PEMILIH TERDAFTAR</h2><div id="m-body"></div></div>
+</div>
+<script>
+const C_KEY = 'dpt_kebondowo_v3';
+let tpsArr = [], allArr = [], curArr = [], activeVoter = null;
+
+function parseCSV(txt) {
+  const lines = txt.trim().split(/\r?\n/);
+  if (lines.length < 2) return [];
+  const head = lines.shift().split(';').map(h => h.trim().toUpperCase());
+  return lines.map(l => {
+    const vals = l.split(';');
+    const obj = {};
+    head.forEach((h, i) => obj[h] = (vals.at(i) || '').trim());
+    return obj;
+  });
+}
+
+function fmtAddr(v) {
+  const dsn = (v.DUSUN || '').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+  return `${dsn} RT ${(v.RT || '').padStart(3, '0')} RW ${(v.RW || '').padStart(3, '0')}`.trim();
+}
+
+async function start() {
+  localStorage.removeItem('dpt_kebondowo_cache_v1');
+  localStorage.removeItem('dpt_kebondowo_cache_v2');
+  const saved = localStorage.getItem(C_KEY);
+  if (saved) {
+    try {
+      const p = JSON.parse(saved);
+      if (p.tpsArr?.length && p.allArr?.length) {
+        tpsArr = p.tpsArr; allArr = p.allArr;
+        document.getElementById('load').classList.add('hid');
+        drawHome();
+        fetchData(true);
+        return;
+      }
+    } catch { localStorage.removeItem(C_KEY); }
+  }
+  await fetchData(false);
+}
+
+async function fetchData(bg) {
+  try {
+    const r = await fetch('data/LOKASI.csv');
+    if (!r.ok) throw new Error('File data/LOKASI.csv tidak ditemukan di GitHub');
+    const list = parseCSV(await r.text());
+    const jobs = list.map(async t => {
+      try {
+        const vr = await fetch('data/' + encodeURIComponent(t.TPS + '.csv'));
+        if (!vr.ok) return { t, v: [] };
+        const v = parseCSV(await vr.text()).map(x => ({ ...x, TPS_N: t.TPS, TPS_T: t.TEMPAT }));
+        return { t, v };
+      } catch { return { t, v: [] }; }
+    });
+    const res = await Promise.all(jobs);
+    const all = [];
+    res.forEach(x => { x.t.voters = x.v; all.push(...x.v); });
+    if (list.length && all.length) {
+      try { localStorage.setItem(C_KEY, JSON.stringify({ tpsArr: list, allArr: all })); } catch {}
+    }
+    if (!bg || all.length !== allArr.length) {
+      tpsArr = list; allArr = all;
+      document.getElementById('load').classList.add('hid');
+      drawHome();
+    }
+  } catch (e) {
+    if (!bg) document.getElementById('load').innerHTML = `<span style="color:#f87171">${e.message}</span>`;
+  }
+}
+
+function drawHome() {
+  const l = allArr.filter(v => v['L/P'] === 'L').length;
+  const p = allArr.filter(v => v['L/P'] === 'P').length;
+  document.getElementById('t-tps').textContent = tpsArr.length;
+  document.getElementById('t-all').textContent = allArr.length.toLocaleString('id-ID');
+  document.getElementById('t-l').textContent = l.toLocaleString('id-ID');
+  document.getElementById('t-p').textContent = p.toLocaleString('id-ID');
+  if (allArr.length) {
+    document.getElementById('p-l').textContent = ((l / allArr.length) * 100).toFixed(1) + '%';
+    document.getElementById('p-p').textContent = ((p / allArr.length) * 100).toFixed(1) + '%';
+  }
+  const box = document.getElementById('list-tps');
+  box.innerHTML = '';
+  tpsArr.forEach((t, idx) => {
+    const vl = t.voters || [];
+    const cl = vl.filter(v => v['L/P'] === 'L').length;
+    const cp = vl.filter(v => v['L/P'] === 'P').length;
+    const el = document.createElement('div');
+    el.className = 'tps-item';
+    el.onclick = () => openTPS(idx);
+    el.innerHTML = `<div style="display:flex;justify-content:space-between;margin-bottom:.6rem"><span class="badge">${t.TPS}</span><span style="font-size:.82rem;color:var(--cyan)">Detail →</span></div><div style="font-weight:600">${t.TEMPAT}</div><div class="meta"><span>Total: <strong>${vl.length}</strong></span><span style="color:var(--l)">L: ${cl}</span><span style="color:var(--p)">P: ${cp}</span></div>`;
+    box.appendChild(el);
+  });
+}
+
+function openTPS(idx) {
+  const t = tpsArr.at(idx);
+  curArr = t.voters || [];
+  document.getElementById('v-home').classList.add('hid');
+  document.getElementById('v-tps').classList.remove('hid');
+  window.scrollTo(0, 0);
+  document.getElementById('d-kode').textContent = t.TPS;
+  document.getElementById('d-lok').textContent = t.TEMPAT;
+  document.getElementById('d-all').textContent = curArr.length;
+  document.getElementById('d-l').textContent = curArr.filter(v => v['L/P'] === 'L').length;
+  document.getElementById('d-p').textContent = curArr.filter(v => v['L/P'] === 'P').length;
+  const rts = {};
+  curArr.forEach(v => {
+    const k = `RT ${v.RT}/RW ${v.RW}`;
+    if (!rts[k]) rts[k] = { tot: 0, l: 0, p: 0 };
+    rts[k].tot++;
+    if (v['L/P'] === 'L') rts[k].l++; else rts[k].p++;
+  });
+  document.getElementById('d-rt').innerHTML = Object.keys(rts).sort().map(k => `<div class="rt-box"><div style="color:var(--purp);font-weight:700;font-size:.85rem">${k}</div><div style="font-size:1.15rem;font-weight:700;margin:.2rem 0">${rts[k].tot}</div><div style="font-size:.75rem;color:var(--mut)">L:${rts[k].l} • P:${rts[k].p}</div></div>`).join('');
+  document.getElementById('q-tps').value = '';
+  document.getElementById('cnt-tps').textContent = `Menampilkan ${curArr.length} pemilih`;
+  drawTbl(curArr);
+}
+function drawTbl(arr) {
+  const tb = document.getElementById('tb-tps');
+  if (!arr.length) { tb.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--mut)">Tidak ditemukan</td></tr>'; return; }
+  tb.innerHTML = arr.map((v, i) => {
+    const dsn = (v.DUSUN || '').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    return `<tr style="cursor:pointer" onclick='showModal(${JSON.stringify(v).replace(/'/g, "&#39;")})'><td>${v.NO || i + 1}</td><td><strong>${v.NAMA}</strong></td><td>${v.USIA}</td><td style="color:${v['L/P'] === 'L' ? 'var(--l)' : 'var(--p)'};font-weight:700">${v['L/P']}</td><td>${dsn}</td><td>${v.RT}/${v.RW}</td><td><span class="ak">${v.KET}</span></td></tr>`;
+  }).join('');
+}
+
+document.getElementById('q-tps').oninput = e => {
+  const q = e.target.value.trim().toLowerCase();
+  const f = curArr.filter(v => v.NAMA.toLowerCase().includes(q) || v.RT.includes(q) || v.DUSUN.toLowerCase().includes(q));
+  document.getElementById('cnt-tps').textContent = q ? `Ditemukan ${f.length} dari ${curArr.length} pemilih` : `Menampilkan ${curArr.length} pemilih`;
+  drawTbl(f);
+};
+
+document.getElementById('q-all').oninput = e => {
+  const q = e.target.value.trim().toLowerCase();
+  const box = document.getElementById('res-all');
+  if (q.length < 3) { box.classList.add('hid'); return; }
+  const mAll = allArr.filter(v => v.NAMA.toLowerCase().includes(q));
+  const m = mAll.slice(0, 100);
+  box.classList.remove('hid');
+  document.getElementById('cnt-all').textContent = `(${mAll.length} ditemukan)`;
+  document.getElementById('tb-all').innerHTML = m.length ? m.map(v => `<tr><td><strong>${v.NAMA}</strong></td><td><span class="badge" style="font-size:.75rem">${v.TPS_N}</span></td><td>${fmtAddr(v)}</td><td style="color:${v['L/P'] === 'L' ? 'var(--l)' : 'var(--p)'};font-weight:700">${v['L/P']}</td><td>${v.USIA}</td><td><button class="btn" style="padding:.25rem .6rem;font-size:.78rem" onclick='showModal(${JSON.stringify(v).replace(/'/g, "&#39;")})'>Detail</button></td></tr>`).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--mut)">Tidak ditemukan</td></tr>';
+};
+
+function showModal(v) {
+  activeVoter = v;
+  const jk = v['L/P'] === 'L' ? 'Laki-Laki' : 'Perempuan';
+  document.getElementById('m-body').innerHTML = `<div style="color:var(--cyan);font-weight:700;margin-bottom:.9rem"><div>${v.TPS_N}</div><div style="font-size:.9rem;font-weight:600">${v.TPS_T}</div></div><div class="row"><span>Nama Lengkap</span><span>${v.NAMA}</span></div><div class="row"><span>Jenis Kelamin</span><span>${jk}</span></div><div class="row"><span>Usia</span><span>${v.USIA} Tahun</span></div><div class="row"><span>Alamat</span><span>${fmtAddr(v)}</span></div><div class="row"><span>Nomor DPT</span><span>${v.NO}</span></div><div class="row"><span>Status DPT</span><span><span class="ak">${v.KET}</span></span></div><div class="acts"><button id="b-ss" class="btn-wa" onclick="shareImg()">📸 Bagikan Kartu</button><button class="btn" style="flex:1" onclick="document.getElementById('modal').classList.add('hid')">Tutup</button></div>`;
+  document.getElementById('modal').classList.remove('hid');
+}
+
+function shareImg() {
+  if (!activeVoter) return;
+  const v = activeVoter, btn = document.getElementById('b-ss');
+  btn.textContent = '⏳...';
+  const lt = document.documentElement.getAttribute('data-theme') === 'light';
+  const c = document.createElement('canvas'); c.width = 720; c.height = 940;
+  const ctx = c.getContext('2d');
+  ctx.beginPath(); ctx.roundRect(12, 12, 696, 916, 30);
+  ctx.fillStyle = lt ? '#fff' : '#0f172a'; ctx.fill();
+  ctx.strokeStyle = lt ? '#0284c7' : '#38bdf8'; ctx.lineWidth = 3; ctx.stroke();
+  ctx.fillStyle = lt ? '#2563eb' : '#818cf8'; ctx.font = 'bold 28px sans-serif';
+  ctx.fillText('IDENTITAS PEMILIH TERDAFTAR', 50, 85);
+  ctx.fillStyle = lt ? '#0284c7' : '#38bdf8'; ctx.font = 'bold 26px sans-serif';
+  ctx.fillText(v.TPS_N, 50, 145); ctx.font = '600 22px sans-serif'; ctx.fillText(v.TPS_T, 50, 180);
+  const rows = [['Nama Lengkap', v.NAMA], ['Jenis Kelamin', v['L/P'] === 'L' ? 'Laki-Laki' : 'Perempuan'], ['Usia', v.USIA + ' Tahun'], ['Alamat', fmtAddr(v)], ['Nomor DPT', v.NO], ['Status DPT', v.KET]];
+  let y = 250;
+  rows.forEach(r => {
+    const lbl = r.at(0), val = String(r.at(1) || '');
+    ctx.strokeStyle = lt ? '#e2e8f0' : 'rgba(255,255,255,.1)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(50, y - 36); ctx.lineTo(670, y - 36); ctx.stroke();
+    ctx.fillStyle = lt ? '#475569' : '#94a3b8'; ctx.font = '500 22px sans-serif'; ctx.textAlign = 'left'; ctx.fillText(lbl, 50, y);
+    if (lbl === 'Status DPT') {
+      ctx.font = 'bold 19px sans-serif'; const w = ctx.measureText(val).width + 40;
+      ctx.beginPath(); ctx.roundRect(670 - w, y - 27, w, 38, 10);
+      ctx.fillStyle = lt ? '#dcfce7' : 'rgba(56,189,248,.18)'; ctx.fill();
+      ctx.fillStyle = lt ? '#15803d' : '#7dd3fc'; ctx.textAlign = 'center'; ctx.fillText(val, 670 - w / 2, y - 2);
+      y += 88;
+    } else {
+      ctx.fillStyle = lt ? '#0f172a' : '#f8fafc'; ctx.font = 'bold 22px sans-serif'; ctx.textAlign = 'right';
+      const words = val.split(' '), lines = []; let cur = words.shift() || '';
+      words.forEach(w => { if (ctx.measureText(cur + ' ' + w).width <= 410) cur += ' ' + w; else { lines.push(cur); cur = w; } });
+      lines.push(cur);
+      lines.forEach((ln, i) => ctx.fillText(ln, 670, y + i * 32));
+      y += 88 + (lines.length - 1) * 30;
+    }
+    ctx.textAlign = 'left';
+  });
+  ctx.fillStyle = lt ? '#475569' : '#94a3b8'; ctx.font = '18px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('© Panitia Pilkades 2026 Desa Kebondowo', 360, 898);
+  btn.textContent = '📸 Bagikan Kartu';
+  c.toBlob(async b => {
+    const fn = 'Kartu_DPT_' + v.NAMA.replace(/\s+/g, '_') + '.png';
+    const f = new File([b], fn, { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [f] })) await navigator.share({ files: [f] });
+    else { const a = document.createElement('a'); a.download = fn; a.href = c.toDataURL(); a.click(); }
+  });
+}
+
+function goHome() { document.getElementById('v-tps').classList.add('hid'); document.getElementById('v-home').classList.remove('hid'); }
+function togThm() {
+  const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  localStorage.setItem('dpt_theme', next);
+  if (next === 'light') { document.documentElement.setAttribute('data-theme', 'light'); document.getElementById('thm-btn').innerHTML = '🌙 Mode Gelap'; }
+  else { document.documentElement.removeAttribute('data-theme'); document.getElementById('thm-btn').innerHTML = '☀️ Mode Terang'; }
+}
+if (localStorage.getItem('dpt_theme') === 'light') togThm();
+start();
+</script>
 </body>
 </html>
