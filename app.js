@@ -192,7 +192,6 @@ function openTpsDetail(index) {
         `;
     });
 
-    // Di bagian paling bawah fungsi openTpsDetail(index):
     document.getElementById('tps-search').value = '';
     const tpsCountEl = document.getElementById('tps-search-count');
     if (tpsCountEl) {
@@ -252,10 +251,8 @@ document.getElementById('global-search').addEventListener('input', (e) => {
         return;
     }
 
-    // Hitung semua kecocokan terlebih dahulu sebelum dibatasi tampilannya
     const allMatches = allVoters.filter(v => v.NAMA.toLowerCase().includes(q));
     const matches = allMatches.slice(0, 100);
-    
     resultBox.classList.remove('hidden');
 
     if (countBadge) {
@@ -285,7 +282,6 @@ document.getElementById('global-search').addEventListener('input', (e) => {
         </tr>
     `).join('');
 });
-
 function showVoterModal(v) {
     const modal = document.getElementById('voter-modal');
     const content = document.getElementById('modal-content');
