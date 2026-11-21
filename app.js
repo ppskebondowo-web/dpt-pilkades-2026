@@ -264,23 +264,24 @@ function showVoterModal(v) {
         </div>
     `;
 
-    document.getElementById('btn-share-wa').onclick = function() {
-        const pesan = "*IDENTITAS PEMILIH TERDAFTAR*\n" +
-                      "📍 *" + v.TPS_NAMA + "* (" + v.TPS_TEMPAT + ")\n\n" +
-                      "• Nama: *" + v.NAMA + "*\n" +
-                      "• Jenis Kelamin: " + jk + "\n" +
-                      "• Usia: " + v.USIA + " Tahun\n" +
-                      "• Alamat: " + alamat + "\n" +
-                      "• Nomor DPT: *" + v.NO + "*\n" +
-                      "• Status: " + v.KET + "\n\n" +
-                      "Cek data pemilih di: " + window.location.href;
-        
-        const waUrl = "https://whatsapp.com" + encodeURIComponent(pesan);
-        window.open(waUrl, "_blank");
-    };
+    const pesan = "*IDENTITAS PEMILIH TERDAFTAR*\n" +
+                  "📍 *" + v.TPS_NAMA + "* (" + v.TPS_TEMPAT + ")\n\n" +
+                  "• Nama: *" + v.NAMA + "*\n" +
+                  "• Jenis Kelamin: " + jk + "\n" +
+                  "• Usia: " + v.USIA + " Tahun\n" +
+                  "• Alamat: " + alamat + "\n" +
+                  "• Nomor DPT: *" + v.NO + "*\n" +
+                  "• Status: " + v.KET + "\n\n" +
+                  "Cek data pemilih di: " + window.location.href;
+
+    const btnWa = document.getElementById('btn-share-wa');
+    if (btnWa) {
+        btnWa.href = "https://whatsapp.com" + encodeURIComponent(pesan);
+    }
 
     modal.classList.remove('hidden');
 }
+
 
 function closeModal(e) {
     if (e.target.id === 'voter-modal') {
