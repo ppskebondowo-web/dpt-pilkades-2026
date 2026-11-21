@@ -1,5 +1,5 @@
 const MASTER_TPS_URL = 'data/LOKASI.csv';
-const CACHE_KEY = 'dpt_kebondowo_cache_v1';
+const CACHE_KEY = 'dpt_kebondowo_cache_v2';
 
 let tpsData = [];
 let allVoters = [];
@@ -34,17 +34,21 @@ function formatAlamat(v) {
 }
 
 async function initApp() {
+    localStorage.removeItem('dpt_kebondowo_cache_v1');
     const cachedData = localStorage.getItem(CACHE_KEY);
+    
     if (cachedData) {
         try {
             const parsed = JSON.parse(cachedData);
-            tpsData = parsed.tpsData || [];
-            allVoters = parsed.allVoters || [];
-            document.getElementById('loading-indicator').classList.add('hidden');
-            renderDashboard();
-            
-            fetchFreshDataFromGitHub(true);
-            return;
+            if (parsed.tpsData && parsed.tpsData.length > 0 && parsed.allVoters && parsed.allVoters.length > 0) {
+                tpsData = parsed.tpsData;
+                allVoters = parsed.allVoters;
+                document.getElementById('loading-indicator').classList.add('hidden');
+                renderDashboard();
+                
+                fetchFreshDataFromGitHub(true);
+                return;
+            }
         } catch (e) {
             localStorage.removeItem(CACHE_KEY);
         }
@@ -85,12 +89,14 @@ async function fetchFreshDataFromGitHub(isBackgroundUpdate) {
             freshAllVoters.push(...item.voters);
         });
 
-        try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify({
-                tpsData: freshTpsData,
-                allVoters: freshAllVoters
-            }));
-        } catch (storageErr) {}
+        if (freshTpsData.length > 0 && freshAllVoters.length > 0) {
+            try {
+                localStorage.setItem(CACHE_KEY, JSON.stringify({
+                    tpsData: freshTpsData,
+                    allVoters: freshAllVoters
+                }));
+            } catch (storageErr) {}
+        }
 
         if (!isBackgroundUpdate || freshAllVoters.length !== allVoters.length) {
             tpsData = freshTpsData;
