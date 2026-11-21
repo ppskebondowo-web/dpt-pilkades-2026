@@ -264,17 +264,19 @@ function showVoterModal(v) {
         </div>
     `;
 
-    document.getElementById('btn-share-wa').onclick = () => {
-        const pesan = `*IDENTITAS PEMILIH TERDAFTAR*\n` +
-                      `📍 *${v.TPS_NAMA}* (${v.TPS_TEMPAT})\n\n` +
-                      `• Nama: *${v.NAMA}*\n` +
-                      `• Jenis Kelamin: ${jk}\n` +
-                      `• Usia: ${v.USIA} Tahun\n` +
-                      `• Alamat: ${alamat}\n` +
-                      `• Nomor DPT: *${v.NO}*\n` +
-                      `• Status: ${v.KET}\n\n` +
-                      `_Cek data pemilih di: ${window.location.href}_`;
-        window.open(`https://wa.me{encodeURIComponent(pesan)}`, '_blank');
+    document.getElementById('btn-share-wa').onclick = function() {
+        const pesan = "*IDENTITAS PEMILIH TERDAFTAR*\n" +
+                      "📍 *" + v.TPS_NAMA + "* (" + v.TPS_TEMPAT + ")\n\n" +
+                      "• Nama: *" + v.NAMA + "*\n" +
+                      "• Jenis Kelamin: " + jk + "\n" +
+                      "• Usia: " + v.USIA + " Tahun\n" +
+                      "• Alamat: " + alamat + "\n" +
+                      "• Nomor DPT: *" + v.NO + "*\n" +
+                      "• Status: " + v.KET + "\n\n" +
+                      "Cek data pemilih di: " + window.location.href;
+        
+        const waUrl = "https://whatsapp.com" + encodeURIComponent(pesan);
+        window.open(waUrl, "_blank");
     };
 
     modal.classList.remove('hidden');
