@@ -275,14 +275,12 @@ function showVoterModal(v) {
 
 async function bagikanScreenshot() {
     const btnSs = document.getElementById('btn-ss');
-    const modal = document.getElementById('voter-modal');
     const content = document.getElementById('modal-content');
     if (!content) return;
 
     btnSs.textContent = '⏳ Memproses...';
 
     try {
-        // Ambil data langsung dari kartu yang sedang tampil
         const tpsTitle = content.querySelector('.modal-tps-title')?.textContent || '';
         const tpsLoc = content.querySelector('.modal-tps-loc')?.textContent || '';
         const rows = Array.from(content.querySelectorAll('.detail-row')).map(row => ({
@@ -298,24 +296,58 @@ async function bagikanScreenshot() {
         const labelColor = isLight ? '#475569' : '#94a3b8';
         const textColor = isLight ? '#0f172a' : '#f8fafc';
         const lineColor = isLight ? '#e2e8f0' : 'rgba(255,255,255,0.1)';
+        const badgeBg = isLight ? '#dcfce7' : 'rgba(56, 189, 248, 0.18)';
+        const badgeText = isLight ? '#15803d' : '#7dd3fc';
 
-        // Buat kanvas HD (720 x 920 px)
+        function drawRoundedRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+
+        function wrapTextLines(ctx, text, maxWidth) {
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = words[0] || '';
+            for (let i = 1; i < words.length; i++) {
+                const testLine = currentLine + ' ' + words[i];
+                if (ctx.measureText(testLine).width <= maxWidth) {
+                    currentLine = testLine;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
         const canvas = document.createElement('canvas');
         canvas.width = 720;
-        canvas.height = 900;
+        canvas.height = 940;
         const ctx = canvas.getContext('2d');
 
-        // Latar kartu & bingkai
+        // Latar kartu sudut membulat & bingkai tipis
+        drawRoundedRect(ctx, 12, 12, canvas.width - 24, canvas.height - 24, 32);
         ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fill();
         ctx.strokeStyle = borderColor;
-        ctx.lineWidth = 6;
-        ctx.strokeRect(18, 18, canvas.width - 36, canvas.height - 36);
+        ctx.lineWidth = 3;
+        ctx.stroke();
 
         // Judul utama
         ctx.fillStyle = titleColor;
         ctx.font = 'bold 28px sans-serif';
-        ctx.fillText('IDENTITAS PEMILIH TERDAFTAR', 52, 88);
+        ctx.textAlign = 'left';
+        ctx.fillText('IDENTITAS PEMILIH TERDAFTAR', 52, 85);
 
         // Info TPS
         ctx.fillStyle = accentColor;
@@ -325,36 +357,62 @@ async function bagikanScreenshot() {
         ctx.fillText(tpsLoc, 52, 180);
 
         // Garis & Baris Data
-        let y = 245;
+        let y = 250;
+        const maxValueWidth = 420;
+
         rows.forEach((r) => {
             ctx.strokeStyle = lineColor;
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.moveTo(52, y - 34);
-            ctx.lineTo(canvas.width - 52, y - 34);
+            ctx.moveTo(52, y - 36);
+            ctx.lineTo(canvas.width - 52, y - 36);
             ctx.stroke();
 
+            // Label kiri
             ctx.fillStyle = labelColor;
-            ctx.font = '500 21px sans-serif';
+            ctx.font = '500 22px sans-serif';
             ctx.textAlign = 'left';
             ctx.fillText(r.label, 52, y);
 
-            ctx.fillStyle = r.label === 'Status DPT' ? '#10b981' : textColor;
-            ctx.font = 'bold 22px sans-serif';
-            ctx.textAlign = 'right';
-            
-            // Potong/bungkus teks jika terlalu panjang
-            const valText = r.value.length > 28 ? r.value.slice(0, 28) + '...' : r.value;
-            ctx.fillText(valText, canvas.width - 52, y);
-            ctx.textAlign = 'left';
+            // Isi kanan
+            if (r.label === 'Status DPT') {
+                ctx.font = 'bold 19px sans-serif';
+                const textW = ctx.measureText(r.value).width;
+                const padX = 20;
+                const badgeW = textW + padX * 2;
+                const badgeH = 38;
+                const badgeX = canvas.width - 52 - badgeW;
+                const badgeY = y - 27;
 
-            y += 92;
+                drawRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, 10);
+                ctx.fillStyle = badgeBg;
+                ctx.fill();
+
+                ctx.fillStyle = badgeText;
+                ctx.textAlign = 'center';
+                ctx.fillText(r.value, badgeX + badgeW / 2, y - 2);
+                ctx.textAlign = 'left';
+                y += 88;
+            } else {
+                ctx.fillStyle = textColor;
+                ctx.font = 'bold 22px sans-serif';
+                ctx.textAlign = 'right';
+
+                const wrappedLines = wrapTextLines(ctx, r.value, maxValueWidth);
+                wrappedLines.forEach((line, idx) => {
+                    ctx.fillText(line, canvas.width - 52, y + (idx * 32));
+                });
+                ctx.textAlign = 'left';
+                y += 88 + ((wrappedLines.length - 1) * 30);
+            }
         });
 
-        // Footer kecil
+        // Footer rata tengah
         ctx.fillStyle = labelColor;
         ctx.font = '18px sans-serif';
-        ctx.fillText('PPS Desa Kebondowo • Portal DPT Digital', 52, canvas.height - 45);
+        ctx.textAlign = 'center';
+        ctx.fillText('© Panitia Pilkades 2026 Desa Kebondowo', canvas.width / 2, canvas.height - 42);
+        ctx.textAlign = 'left';
 
         btnSs.textContent = '📸 Bagikan Kartu';
 
