@@ -227,11 +227,23 @@ document.getElementById('global-search').addEventListener('input', (e) => {
     `).join('');
 });
 
+let pesanAktifWA = "";
+
 function showVoterModal(v) {
     const modal = document.getElementById('voter-modal');
     const content = document.getElementById('modal-content');
     const alamat = formatAlamat(v);
     const jk = v['L/P'] === 'L' ? 'Laki-Laki' : 'Perempuan';
+
+    pesanAktifWA = "*IDENTITAS PEMILIH TERDAFTAR*\n" +
+                   "📍 *" + v.TPS_NAMA + "* (" + v.TPS_TEMPAT + ")\n\n" +
+                   "• Nama: *" + v.NAMA + "*\n" +
+                   "• Jenis Kelamin: " + jk + "\n" +
+                   "• Usia: " + v.USIA + " Tahun\n" +
+                   "• Alamat: " + alamat + "\n" +
+                   "• Nomor DPT: *" + v.NO + "*\n" +
+                   "• Status: " + v.KET + "\n\n" +
+                   "Cek data pemilih di: " + window.location.href;
 
     content.innerHTML = `
         <div class="modal-tps-header">
@@ -262,25 +274,31 @@ function showVoterModal(v) {
             <span>Status DPT</span>
             <span><span class="badge-aktif">${v.KET}</span></span>
         </div>
+        <div class="modal-actions">
+            <button type="button" class="btn-wa" onclick="bagikanKeWA()">📲 Bagikan WA</button>
+            <button type="button" class="btn-back btn-modal-close" onclick="document.getElementById('voter-modal').classList.add('hidden')">Tutup</button>
+        </div>
     `;
-
-    const pesan = "*IDENTITAS PEMILIH TERDAFTAR*\n" +
-                  "📍 *" + v.TPS_NAMA + "* (" + v.TPS_TEMPAT + ")\n\n" +
-                  "• Nama: *" + v.NAMA + "*\n" +
-                  "• Jenis Kelamin: " + jk + "\n" +
-                  "• Usia: " + v.USIA + " Tahun\n" +
-                  "• Alamat: " + alamat + "\n" +
-                  "• Nomor DPT: *" + v.NO + "*\n" +
-                  "• Status: " + v.KET + "\n\n" +
-                  "Cek data pemilih di: " + window.location.href;
-
-    const btnWa = document.getElementById('btn-share-wa');
-    if (btnWa) {
-        btnWa.href = "https://whatsapp.com" + encodeURIComponent(pesan);
-    }
 
     modal.classList.remove('hidden');
 }
+
+function bagikanKeWA() {
+    if (!pesanAktifWA) return;
+    
+    // Gunakan fitur Share bawaan HP Android jika tersedia (paling stabil)
+    if (navigator.share) {
+        navigator.share({
+            title: 'Identitas Pemilih Terdaftar',
+            text: pesanAktifWA
+        }).catch(() => {});
+    } else {
+        // Cadangan untuk komputer/laptop
+        const waUrl = "https://whatsapp.com" + encodeURIComponent(pesanAktifWA);
+        window.location.href = waUrl;
+    }
+}
+
 
 
 function closeModal(e) {
