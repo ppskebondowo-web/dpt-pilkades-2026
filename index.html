@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal DPT Digital - Desa Kebondowo</title>
+    <title>Daftar Pemilih Tetap - Desa Kebondowo</title>
     <link href="https://googleapis.com" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=5">
+    <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 
-<div class="container">
 <button id="theme-toggle" class="btn-theme" onclick="toggleTheme()" aria-label="Ganti Tema">
     ☀️ Mode Terang
 </button>
@@ -128,10 +127,13 @@
     <div class="modal-card" onclick="event.stopPropagation()">
         <h2>IDENTITAS PEMILIH TERDAFTAR</h2>
         <div id="modal-content"></div>
-        <button class="btn-back btn-modal-close" onclick="document.getElementById('voter-modal').classList.add('hidden')">Tutup</button>
+        <div class="modal-actions">
+            <button id="btn-share-wa" class="btn-wa">📲 Bagikan WA</button>
+            <button class="btn-back btn-modal-close" onclick="document.getElementById('voter-modal').classList.add('hidden')">Tutup</button>
+        </div>
     </div>
 </div>
 
-<script src="app.js?v=5"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>
