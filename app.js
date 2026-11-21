@@ -274,26 +274,88 @@ function showVoterModal(v) {
 }
 
 async function bagikanScreenshot() {
-    const kartu = document.getElementById('kartu-identitas-box');
-    const btnGroup = document.getElementById('modal-btn-group');
     const btnSs = document.getElementById('btn-ss');
-    
-    if (!kartu || typeof html2canvas === 'undefined') {
-        alert('Fitur screenshot sedang dimuat, coba sesaat lagi.');
-        return;
-    }
+    const modal = document.getElementById('voter-modal');
+    const content = document.getElementById('modal-content');
+    if (!content) return;
 
     btnSs.textContent = '⏳ Memproses...';
-    if (btnGroup) btnGroup.style.display = 'none';
 
     try {
-        const canvas = await html2canvas(kartu, {
-            scale: 2,
-            backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--modal-bg').trim() || '#0f172a',
-            useCORS: true
+        // Ambil data langsung dari kartu yang sedang tampil
+        const tpsTitle = content.querySelector('.modal-tps-title')?.textContent || '';
+        const tpsLoc = content.querySelector('.modal-tps-loc')?.textContent || '';
+        const rows = Array.from(content.querySelectorAll('.detail-row')).map(row => ({
+            label: row.children[0]?.textContent || '',
+            value: row.children[1]?.textContent || ''
+        }));
+
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        const bgColor = isLight ? '#ffffff' : '#0f172a';
+        const borderColor = isLight ? '#0284c7' : '#38bdf8';
+        const titleColor = isLight ? '#2563eb' : '#818cf8';
+        const accentColor = isLight ? '#0284c7' : '#38bdf8';
+        const labelColor = isLight ? '#475569' : '#94a3b8';
+        const textColor = isLight ? '#0f172a' : '#f8fafc';
+        const lineColor = isLight ? '#e2e8f0' : 'rgba(255,255,255,0.1)';
+
+        // Buat kanvas HD (720 x 920 px)
+        const canvas = document.createElement('canvas');
+        canvas.width = 720;
+        canvas.height = 900;
+        const ctx = canvas.getContext('2d');
+
+        // Latar kartu & bingkai
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = 6;
+        ctx.strokeRect(18, 18, canvas.width - 36, canvas.height - 36);
+
+        // Judul utama
+        ctx.fillStyle = titleColor;
+        ctx.font = 'bold 28px sans-serif';
+        ctx.fillText('IDENTITAS PEMILIH TERDAFTAR', 52, 88);
+
+        // Info TPS
+        ctx.fillStyle = accentColor;
+        ctx.font = 'bold 26px sans-serif';
+        ctx.fillText(tpsTitle, 52, 145);
+        ctx.font = '600 22px sans-serif';
+        ctx.fillText(tpsLoc, 52, 180);
+
+        // Garis & Baris Data
+        let y = 245;
+        rows.forEach((r) => {
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(52, y - 34);
+            ctx.lineTo(canvas.width - 52, y - 34);
+            ctx.stroke();
+
+            ctx.fillStyle = labelColor;
+            ctx.font = '500 21px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(r.label, 52, y);
+
+            ctx.fillStyle = r.label === 'Status DPT' ? '#10b981' : textColor;
+            ctx.font = 'bold 22px sans-serif';
+            ctx.textAlign = 'right';
+            
+            // Potong/bungkus teks jika terlalu panjang
+            const valText = r.value.length > 28 ? r.value.slice(0, 28) + '...' : r.value;
+            ctx.fillText(valText, canvas.width - 52, y);
+            ctx.textAlign = 'left';
+
+            y += 92;
         });
 
-        if (btnGroup) btnGroup.style.display = 'flex';
+        // Footer kecil
+        ctx.fillStyle = labelColor;
+        ctx.font = '18px sans-serif';
+        ctx.fillText('PPS Desa Kebondowo • Portal DPT Digital', 52, canvas.height - 45);
+
         btnSs.textContent = '📸 Bagikan Kartu';
 
         canvas.toBlob(async (blob) => {
@@ -313,7 +375,6 @@ async function bagikanScreenshot() {
             }
         }, 'image/png');
     } catch (err) {
-        if (btnGroup) btnGroup.style.display = 'flex';
         btnSs.textContent = '📸 Bagikan Kartu';
         alert('Gagal membuat gambar kartu.');
     }
