@@ -272,7 +272,7 @@ function shareImg() {
       ctx.fillStyle = lt ? '#15803d' : '#7dd3fc'; ctx.textAlign = 'center'; ctx.fillText(val, 670 - w / 2, y - 2);
       y += 88;
     } else {
-      ctx.fillStyle = lt ? '#0f172a' : '#f8fafc'; ctx.font = 'bold 36px sans-serif'; ctx.textAlign = 'right';
+      ctx.fillStyle = lt ? '#0f172a' : '#f8fafc'; ctx.font = 'bold 30px sans-serif'; ctx.textAlign = 'right';
       const words = val.split(' '), lines = []; let cur = words.shift() || '';
       words.forEach(w => { if (ctx.measureText(cur + ' ' + w).width <= 410) cur += ' ' + w; else { lines.push(cur); cur = w; } });
       lines.push(cur);
