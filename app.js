@@ -232,9 +232,9 @@ function showVoterModal(v) {
     const content = document.getElementById('modal-content');
 
     content.innerHTML = `
-        <div class="detail-row">
-            <span>TPS</span>
-            <span style="color:var(--accent-cyan);">${v.TPS_NAMA} - ${v.TPS_TEMPAT}</span>
+        <div class="modal-tps-header">
+            <div class="modal-tps-title">${v.TPS_NAMA}</div>
+            <div class="modal-tps-loc">${v.TPS_TEMPAT}</div>
         </div>
         <div class="detail-row">
             <span>Nama Lengkap</span>
