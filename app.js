@@ -192,7 +192,12 @@ function openTpsDetail(index) {
         `;
     });
 
+    // Di bagian paling bawah fungsi openTpsDetail(index):
     document.getElementById('tps-search').value = '';
+    const tpsCountEl = document.getElementById('tps-search-count');
+    if (tpsCountEl) {
+        tpsCountEl.textContent = `Menampilkan semua ${currentTpsVoters.length} pemilih terdaftar`;
+    }
     renderTpsTable(currentTpsVoters);
 }
 
@@ -219,12 +224,20 @@ function renderTpsTable(data) {
 }
 
 document.getElementById('tps-search').addEventListener('input', (e) => {
-    const q = e.target.value.toLowerCase();
+    const q = e.target.value.trim().toLowerCase();
     const filtered = currentTpsVoters.filter(v => 
         v.NAMA.toLowerCase().includes(q) || 
         v.RT.includes(q) || 
         v.DUSUN.toLowerCase().includes(q)
     );
+    
+    const tpsCountEl = document.getElementById('tps-search-count');
+    if (tpsCountEl) {
+        tpsCountEl.textContent = q === '' 
+            ? `Menampilkan semua ${currentTpsVoters.length} pemilih terdaftar`
+            : `Ditemukan ${filtered.length} dari ${currentTpsVoters.length} pemilih di TPS ini`;
+    }
+    
     renderTpsTable(filtered);
 });
 
