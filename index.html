@@ -96,7 +96,7 @@ th{background:var(--th);color:var(--cyan);font-size:.78rem;text-transform:upperc
   <div class="mod"><h2 id="m-head">IDENTITAS PEMILIH TERDAFTAR</h2><div id="m-body"></div></div>
 </div>
 <script>
-const C_KEY = 'dpt_kebondowo_v3';
+const C_KEY = 'dpt_kebondowo_v4';
 let tpsArr = [], allArr = [], curArr = [], activeVoter = null;
 
 function parseCSV(txt) {
@@ -144,7 +144,12 @@ async function fetchData(bg) {
       try {
         const vr = await fetch('data/' + encodeURIComponent(t.TPS + '.csv'));
         if (!vr.ok) return { t, v: [] };
-        const v = parseCSV(await vr.text()).map(x => ({ ...x, TPS_N: t.TPS, TPS_T: t.TEMPAT }));
+        const v = parseCSV(await vr.text()).map(x => ({ 
+          ...x, 
+          TPS_N: t.TPS, 
+          TPS_A1: t.ALMT1 || '', 
+          TPS_A2: t.ALMT2 || '' 
+        }));
         return { t, v };
       } catch { return { t, v: [] }; }
     });
@@ -184,7 +189,18 @@ function drawHome() {
     const el = document.createElement('div');
     el.className = 'tps-item';
     el.onclick = () => openTPS(idx);
-    el.innerHTML = `<div style="display:flex;justify-content:space-between;margin-bottom:.6rem"><span class="badge">${t.TPS}</span><span style="font-size:.82rem;color:var(--cyan)">Detail →</span></div><div style="font-weight:600">${t.TEMPAT}</div><div class="meta"><span>Total: <strong>${vl.length}</strong></span><span style="color:var(--l)">L: ${cl}</span><span style="color:var(--p)">P: ${cp}</span></div>`;
+    el.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem">
+        <span class="badge">${t.TPS}</span>
+        <span style="font-size:.8rem;color:var(--cyan)">Detail →</span>
+      </div>
+      <div style="font-weight:600;font-size:.88rem;line-height:1.35">${t.ALMT1 || ''}</div>
+      <div style="font-size:.8rem;color:var(--mut);line-height:1.35;margin-top:.15rem">${t.ALMT2 || ''}</div>
+      <div class="meta">
+        <span>Total: <strong>${vl.length}</strong></span>
+        <span style="color:var(--l)">L: ${cl}</span>
+        <span style="color:var(--p)">P: ${cp}</span>
+      </div>`;
     box.appendChild(el);
   });
 }
@@ -199,7 +215,10 @@ function openTPS(idx) {
   document.getElementById('v-tps').classList.remove('hid');
   window.scrollTo(0, 0);
   document.getElementById('d-kode').textContent = t.TPS;
-  document.getElementById('d-lok').textContent = t.TEMPAT;
+  document.getElementById('d-lok').innerHTML = `
+    <div style="font-size:1.15rem;line-height:1.35">${t.ALMT1 || ''}</div>
+    <div style="font-size:.9rem;font-weight:500;color:var(--mut);margin-top:.15rem">${t.ALMT2 || ''}</div>
+  `;
   document.getElementById('d-all').textContent = curArr.length;
   document.getElementById('d-l').textContent = curArr.filter(v => v['L/P'] === 'L').length;
   document.getElementById('d-p').textContent = curArr.filter(v => v['L/P'] === 'P').length;
@@ -275,7 +294,12 @@ document.getElementById('q-all').oninput = e => {
 function showModal(v) {
   activeVoter = v;
   const jk = v['L/P'] === 'L' ? 'Laki-Laki' : 'Perempuan';
-  document.getElementById('m-body').innerHTML = `<div style="color:var(--cyan);font-weight:700;margin-bottom:.9rem"><div>${v.TPS_N}</div><div style="font-size:.9rem;font-weight:600">${v.TPS_T}</div></div><div class="row"><span>Nama Lengkap</span><span>${v.NAMA}</span></div><div class="row"><span>Jenis Kelamin</span><span>${jk}</span></div><div class="row"><span>Usia</span><span>${v.USIA} Tahun</span></div><div class="row"><span>Alamat</span><span>${fmtAddr(v)}</span></div><div class="row"><span>Nomor DPT</span><span>${v.NO}</span></div><div class="row"><span>Status DPT</span><span><span class="ak">${v.KET}</span></span></div><div class="acts"><button id="b-ss" class="btn-wa" onclick="shareImg()">📸 Bagikan Kartu</button><button class="btn" style="flex:1" onclick="document.getElementById('modal').classList.add('hid')">Tutup</button></div>`;
+  document.getElementById('m-body').innerHTML = `
+    <div style="color:var(--cyan);margin-bottom:.9rem">
+      <div style="font-weight:700;font-size:1rem">${v.TPS_N}</div>
+      <div style="font-size:.85rem;font-weight:600;line-height:1.35;margin-top:.15rem">${v.TPS_A1}</div>
+      <div style="font-size:.8rem;font-weight:500;opacity:.85;line-height:1.35">${v.TPS_A2}</div>
+    </div>
   document.getElementById('modal').classList.remove('hid');
 }
 
