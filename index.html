@@ -34,7 +34,9 @@ th,td{padding:.85rem;border-bottom:1px solid var(--line)}
 th{background:var(--th);color:var(--cyan);font-size:.78rem;text-transform:uppercase}
 .btn{background:var(--card);color:var(--txt);border:1px solid var(--border);padding:.55rem 1rem;border-radius:9px;cursor:pointer;font-weight:600;font-size:.85rem}
 .rt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.8rem;margin:1rem 0 1.5rem}
-.rt-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.85rem;text-align:center}
+.rt-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.85rem;text-align:center;cursor:pointer;transition:.2s}
+.rt-box:hover{border-color:var(--cyan);transform:translateY(-2px)}
+.rt-box.act{border-color:var(--cyan);background:rgba(56,189,248,.16);box-shadow:0 0 12px rgba(56,189,248,.2)}
 .hid{display:none!important}
 .ak{background:var(--bg-ak);color:var(--tx-ak);padding:.2rem .55rem;border-radius:5px;font-size:.75rem;font-weight:700}
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:50;padding:1rem}
@@ -187,9 +189,12 @@ function drawHome() {
   });
 }
 
+let activeRt = '';
+
 function openTPS(idx) {
   const t = tpsArr.at(idx);
   curArr = t.voters || [];
+  activeRt = '';
   document.getElementById('v-home').classList.add('hid');
   document.getElementById('v-tps').classList.remove('hid');
   window.scrollTo(0, 0);
@@ -205,11 +210,41 @@ function openTPS(idx) {
     rts[k].tot++;
     if (v['L/P'] === 'L') rts[k].l++; else rts[k].p++;
   });
-  document.getElementById('d-rt').innerHTML = Object.keys(rts).sort().map(k => `<div class="rt-box"><div style="color:var(--purp);font-weight:700;font-size:.85rem">${k}</div><div style="font-size:1.15rem;font-weight:700;margin:.2rem 0">${rts[k].tot}</div><div style="font-size:.75rem;color:var(--mut)">L:${rts[k].l} • P:${rts[k].p}</div></div>`).join('');
+  document.getElementById('d-rt').innerHTML = Object.keys(rts).sort().map(k => `<div class="rt-box" onclick="filterByRT('${k}', this)"><div style="color:var(--purp);font-weight:700;font-size:.85rem">${k}</div><div style="font-size:1.15rem;font-weight:700;margin:.2rem 0">${rts[k].tot}</div><div style="font-size:.75rem;color:var(--mut)">L:${rts[k].l} • P:${rts[k].p}</div></div>`).join('');
   document.getElementById('q-tps').value = '';
-  document.getElementById('cnt-tps').textContent = `Menampilkan ${curArr.length} pemilih`;
-  drawTbl(curArr);
+  applyTpsFilter();
 }
+
+function filterByRT(rtKey, el) {
+  const boxes = document.querySelectorAll('.rt-box');
+  if (activeRt === rtKey) {
+    activeRt = '';
+    boxes.forEach(b => b.classList.remove('act'));
+  } else {
+    activeRt = rtKey;
+    boxes.forEach(b => b.classList.remove('act'));
+    if (el) el.classList.add('act');
+  }
+  applyTpsFilter();
+}
+
+function applyTpsFilter() {
+  const q = document.getElementById('q-tps').value.trim().toLowerCase();
+  const f = curArr.filter(v => {
+    const matchRt = !activeRt || (`RT ${v.RT}/RW ${v.RW}` === activeRt);
+    const matchQ = !q || v.NAMA.toLowerCase().includes(q) || v.RT.includes(q) || v.DUSUN.toLowerCase().includes(q);
+    return matchRt && matchQ;
+  });
+  let label = `Menampilkan ${f.length} pemilih`;
+  if (activeRt && q) label = `Ditemukan ${f.length} pemilih di ${activeRt} untuk "${q}"`;
+  else if (activeRt) label = `Menampilkan ${f.length} pemilih di ${activeRt} (klik kotak RT lagi untuk tampilkan semua)`;
+  else if (q) label = `Ditemukan ${f.length} dari ${curArr.length} pemilih`;
+  document.getElementById('cnt-tps').textContent = label;
+  drawTbl(f);
+}
+
+document.getElementById('q-tps').oninput = applyTpsFilter;
+
 function drawTbl(arr) {
   const tb = document.getElementById('tb-tps');
   if (!arr.length) { tb.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--mut)">Tidak ditemukan</td></tr>'; return; }
