@@ -24,10 +24,10 @@ header p{color:var(--mut);font-size:.88rem;margin-top:.25rem}
 .inp{width:100%;padding:.9rem 1.1rem;border-radius:12px;border:1px solid var(--border);background:var(--inp);color:var(--txt);font-size:.95rem;outline:none;margin-bottom:1.5rem}
 .inp:focus{border-color:var(--cyan)}
 .tps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
-.tps-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem;cursor:pointer;transition:.2s}
+.tps-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem;cursor:pointer;transition:.2s;display:flex;flex-direction:column;justify-content:space-between}
 .tps-item:hover{border-color:var(--purp);transform:translateY(-3px)}
 .badge{font-family:'Orbitron',sans-serif;background:rgba(56,189,248,.15);color:var(--cyan);padding:.25rem .65rem;border-radius:6px;font-size:.85rem;font-weight:700}
-.meta{display:flex;justify-content:space-between;font-size:.82rem;color:var(--mut);border-top:1px solid var(--line);padding-top:.6rem;margin-top:.8rem}
+.meta{display:flex;justify-content:space-between;font-size:.82rem;color:var(--mut);border-top:1px solid var(--line);padding-top:.6rem;margin-top:.85rem}
 .tbl-box{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow-x:auto;margin-bottom:2rem}
 table{width:100%;border-collapse:collapse;font-size:.88rem;text-align:left}
 th,td{padding:.85rem;border-bottom:1px solid var(--line)}
@@ -78,13 +78,13 @@ th{background:var(--th);color:var(--cyan);font-size:.78rem;text-transform:upperc
 
   <section id="v-tps" class="hid">
     <button class="btn" style="margin-bottom:1rem" onclick="goHome()">← Kembali</button>
-    <div style="margin-bottom:1.25rem"><span class="badge" id="d-kode">TPS</span><h2 id="d-lok" style="margin-top:.4rem"></h2></div>
+    <div style="margin-bottom:1.25rem"><span class="badge" id="d-kode">TPS</span><div id="d-lok" style="margin-top:.5rem"></div></div>
     <div class="grid4">
       <div class="card"><h3>Total Pemilih</h3><div class="val" id="d-all">0</div></div>
       <div class="card"><h3>Laki-Laki</h3><div class="val" style="color:var(--l)" id="d-l">0</div></div>
       <div class="card"><h3>Perempuan</h3><div class="val" style="color:var(--p)" id="d-p">0</div></div>
     </div>
-    <h3 style="color:var(--mut);font-size:1rem">Rincian Per RT</h3>
+    <h3 style="color:var(--mut);font-size:1rem">Rincian Per RT (Klik kotak RT untuk menyaring)</h3>
     <div class="rt-grid" id="d-rt"></div>
     <input type="text" id="q-tps" class="inp" style="margin-bottom:.4rem" placeholder="🔍 Cari nama atau filter RT di TPS ini...">
     <p id="cnt-tps" style="font-size:.82rem;color:var(--cyan);margin-bottom:1rem"></p>
@@ -97,7 +97,7 @@ th{background:var(--th);color:var(--cyan);font-size:.78rem;text-transform:upperc
 </div>
 <script>
 const C_KEY = 'dpt_kebondowo_v4';
-let tpsArr = [], allArr = [], curArr = [], activeVoter = null;
+let tpsArr = [], allArr = [], curArr = [], activeVoter = null, activeRt = '';
 
 function parseCSV(txt) {
   const lines = txt.trim().split(/\r?\n/);
@@ -117,8 +117,7 @@ function fmtAddr(v) {
 }
 
 async function start() {
-  localStorage.removeItem('dpt_kebondowo_cache_v1');
-  localStorage.removeItem('dpt_kebondowo_cache_v2');
+  localStorage.removeItem('dpt_kebondowo_v3');
   const saved = localStorage.getItem(C_KEY);
   if (saved) {
     try {
@@ -144,11 +143,11 @@ async function fetchData(bg) {
       try {
         const vr = await fetch('data/' + encodeURIComponent(t.TPS + '.csv'));
         if (!vr.ok) return { t, v: [] };
-        const v = parseCSV(await vr.text()).map(x => ({ 
-          ...x, 
-          TPS_N: t.TPS, 
-          TPS_A1: t.ALMT1 || '', 
-          TPS_A2: t.ALMT2 || '' 
+        const v = parseCSV(await vr.text()).map(x => ({
+          ...x,
+          TPS_N: t.TPS,
+          TPS_A1: t.ALMT1 || '',
+          TPS_A2: t.ALMT2 || ''
         }));
         return { t, v };
       } catch { return { t, v: [] }; }
@@ -190,12 +189,14 @@ function drawHome() {
     el.className = 'tps-item';
     el.onclick = () => openTPS(idx);
     el.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem">
-        <span class="badge">${t.TPS}</span>
-        <span style="font-size:.8rem;color:var(--cyan)">Detail →</span>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem">
+          <span class="badge">${t.TPS}</span>
+          <span style="font-size:.8rem;color:var(--cyan)">Detail →</span>
+        </div>
+        <div style="font-weight:600;font-size:.88rem;line-height:1.35">${t.ALMT1 || ''}</div>
+        <div style="font-size:.8rem;color:var(--mut);line-height:1.35;margin-top:.15rem">${t.ALMT2 || ''}</div>
       </div>
-      <div style="font-weight:600;font-size:.88rem;line-height:1.35">${t.ALMT1 || ''}</div>
-      <div style="font-size:.8rem;color:var(--mut);line-height:1.35;margin-top:.15rem">${t.ALMT2 || ''}</div>
       <div class="meta">
         <span>Total: <strong>${vl.length}</strong></span>
         <span style="color:var(--l)">L: ${cl}</span>
@@ -204,8 +205,6 @@ function drawHome() {
     box.appendChild(el);
   });
 }
-
-let activeRt = '';
 
 function openTPS(idx) {
   const t = tpsArr.at(idx);
@@ -216,7 +215,7 @@ function openTPS(idx) {
   window.scrollTo(0, 0);
   document.getElementById('d-kode').textContent = t.TPS;
   document.getElementById('d-lok').innerHTML = `
-    <div style="font-size:1.15rem;line-height:1.35">${t.ALMT1 || ''}</div>
+    <div style="font-size:1.15rem;font-weight:700;line-height:1.35">${t.ALMT1 || ''}</div>
     <div style="font-size:.9rem;font-weight:500;color:var(--mut);margin-top:.15rem">${t.ALMT2 || ''}</div>
   `;
   document.getElementById('d-all').textContent = curArr.length;
@@ -233,7 +232,6 @@ function openTPS(idx) {
   document.getElementById('q-tps').value = '';
   applyTpsFilter();
 }
-
 function filterByRT(rtKey, el) {
   const boxes = document.querySelectorAll('.rt-box');
   if (activeRt === rtKey) {
@@ -273,13 +271,6 @@ function drawTbl(arr) {
   }).join('');
 }
 
-document.getElementById('q-tps').oninput = e => {
-  const q = e.target.value.trim().toLowerCase();
-  const f = curArr.filter(v => v.NAMA.toLowerCase().includes(q) || v.RT.includes(q) || v.DUSUN.toLowerCase().includes(q));
-  document.getElementById('cnt-tps').textContent = q ? `Ditemukan ${f.length} dari ${curArr.length} pemilih` : `Menampilkan ${curArr.length} pemilih`;
-  drawTbl(f);
-};
-
 document.getElementById('q-all').oninput = e => {
   const q = e.target.value.trim().toLowerCase();
   const box = document.getElementById('res-all');
@@ -300,6 +291,13 @@ function showModal(v) {
       <div style="font-size:.85rem;font-weight:600;line-height:1.35;margin-top:.15rem">${v.TPS_A1}</div>
       <div style="font-size:.8rem;font-weight:500;opacity:.85;line-height:1.35">${v.TPS_A2}</div>
     </div>
+    <div class="row"><span>Nama Lengkap</span><span>${v.NAMA}</span></div>
+    <div class="row"><span>Jenis Kelamin</span><span>${jk}</span></div>
+    <div class="row"><span>Usia</span><span>${v.USIA} Tahun</span></div>
+    <div class="row"><span>Alamat</span><span>${fmtAddr(v)}</span></div>
+    <div class="row"><span>Nomor DPT</span><span>${v.NO}</span></div>
+    <div class="row"><span>Status DPT</span><span><span class="ak">${v.KET}</span></span></div>
+    <div class="acts"><button id="b-ss" class="btn-wa" onclick="shareImg()">📸 Bagikan Kartu</button><button class="btn" style="flex:1" onclick="document.getElementById('modal').classList.add('hid')">Tutup</button></div>`;
   document.getElementById('modal').classList.remove('hid');
 }
 
@@ -308,40 +306,42 @@ function shareImg() {
   const v = activeVoter, btn = document.getElementById('b-ss');
   btn.textContent = '⏳...';
   const lt = document.documentElement.getAttribute('data-theme') === 'light';
-  const c = document.createElement('canvas'); c.width = 720; c.height = 940;
+  const c = document.createElement('canvas'); c.width = 720; c.height = 970;
   const ctx = c.getContext('2d');
-  ctx.beginPath(); ctx.roundRect(12, 12, 696, 916, 30);
+  ctx.beginPath(); ctx.roundRect(12, 12, 696, 946, 30);
   ctx.fillStyle = lt ? '#fff' : '#0f172a'; ctx.fill();
   ctx.strokeStyle = lt ? '#0284c7' : '#38bdf8'; ctx.lineWidth = 3; ctx.stroke();
   ctx.fillStyle = lt ? '#2563eb' : '#818cf8'; ctx.font = 'bold 28px sans-serif';
-  ctx.fillText('IDENTITAS PEMILIH TERDAFTAR', 50, 85);
+  ctx.fillText('IDENTITAS PEMILIH TERDAFTAR', 50, 82);
   ctx.fillStyle = lt ? '#0284c7' : '#38bdf8'; ctx.font = 'bold 26px sans-serif';
-  ctx.fillText(v.TPS_N, 50, 145); ctx.font = '600 22px sans-serif'; ctx.fillText(v.TPS_T, 50, 180);
+  ctx.fillText(v.TPS_N, 50, 138);
+  ctx.font = '600 20px sans-serif'; ctx.fillText(v.TPS_A1 || '', 50, 168);
+  ctx.font = '500 18px sans-serif'; ctx.fillText(v.TPS_A2 || '', 50, 194);
   const rows = [['Nama Lengkap', v.NAMA], ['Jenis Kelamin', v['L/P'] === 'L' ? 'Laki-Laki' : 'Perempuan'], ['Usia', v.USIA + ' Tahun'], ['Alamat', fmtAddr(v)], ['Nomor DPT', v.NO], ['Status DPT', v.KET]];
-  let y = 250;
+  let y = 262;
   rows.forEach(r => {
     const lbl = r.at(0), val = String(r.at(1) || '');
     ctx.strokeStyle = lt ? '#e2e8f0' : 'rgba(255,255,255,.1)'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(50, y - 36); ctx.lineTo(670, y - 36); ctx.stroke();
     ctx.fillStyle = lt ? '#475569' : '#94a3b8'; ctx.font = '500 22px sans-serif'; ctx.textAlign = 'left'; ctx.fillText(lbl, 50, y);
     if (lbl === 'Status DPT') {
-      ctx.font = 'bold 19px sans-serif'; const w = ctx.measureText(val).width + 40;
-      ctx.beginPath(); ctx.roundRect(670 - w, y - 27, w, 38, 10);
+      ctx.font = 'bold 20px sans-serif'; const w = ctx.measureText(val).width + 44;
+      ctx.beginPath(); ctx.roundRect(670 - w, y - 28, w, 40, 10);
       ctx.fillStyle = lt ? '#dcfce7' : 'rgba(56,189,248,.18)'; ctx.fill();
-      ctx.fillStyle = lt ? '#15803d' : '#7dd3fc'; ctx.textAlign = 'center'; ctx.fillText(val, 670 - w / 2, y - 2);
-      y += 88;
+      ctx.fillStyle = lt ? '#15803d' : '#7dd3fc'; ctx.textAlign = 'center'; ctx.fillText(val, 670 - w / 2, y - 1);
+      y += 92;
     } else {
-      ctx.fillStyle = lt ? '#0f172a' : '#f8fafc'; ctx.font = 'bold 30px sans-serif'; ctx.textAlign = 'right';
+      ctx.fillStyle = lt ? '#0f172a' : '#f8fafc'; ctx.font = 'bold 27px sans-serif'; ctx.textAlign = 'right';
       const words = val.split(' '), lines = []; let cur = words.shift() || '';
-      words.forEach(w => { if (ctx.measureText(cur + ' ' + w).width <= 410) cur += ' ' + w; else { lines.push(cur); cur = w; } });
+      words.forEach(w => { if (ctx.measureText(cur + ' ' + w).width <= 430) cur += ' ' + w; else { lines.push(cur); cur = w; } });
       lines.push(cur);
-      lines.forEach((ln, i) => ctx.fillText(ln, 670, y + i * 32));
-      y += 88 + (lines.length - 1) * 30;
+      lines.forEach((ln, i) => ctx.fillText(ln, 670, y + i * 35));
+      y += 92 + (lines.length - 1) * 34;
     }
     ctx.textAlign = 'left';
   });
   ctx.fillStyle = lt ? '#475569' : '#94a3b8'; ctx.font = '18px sans-serif'; ctx.textAlign = 'center';
-  ctx.fillText('© Panitia Pilkades 2026 Desa Kebondowo', 360, 898);
+  ctx.fillText('© Panitia Pilkades 2026 Desa Kebondowo', 360, 928);
   btn.textContent = '📸 Bagikan Kartu';
   c.toBlob(async b => {
     const fn = 'Kartu_DPT_' + v.NAMA.replace(/\s+/g, '_') + '.png';
