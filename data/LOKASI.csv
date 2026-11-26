@@ -1,12 +1,12 @@
-NO;TPS;TEMPAT
-1;TPS 001;Dusun Jambon RW 001
-2;TPS 002;Dusun Kauman RW 002
-3;TPS 003;Dusun Kauman RW 003
-4;TPS 004;Dusun Pundan RW 004
-5;TPS 005;Dusun Pundan RW 005
-6;TPS 006;Zipur RW 013 + Pusdik RW 008
-7;TPS 007;Dusun Kebonbawang RW 006 & RW 007
-8;TPS 008;Dusun Kebondowo RW 009
-9;TPS 009;Dusun Kebondowo RW 010
-10;TPS 010;Dusun Jrakah RW 011
-11;TPS 011;Dusun Kebonsari RW 012
+No;TPS;Almt1;Almt2
+1;001;Rumah Bapak Mochamad Chosim;Dusun Jambon Rt 01 RW 01
+2;002;Rumah Bapak Heri Setyobudi;Dusun Kauman RT 02 RW 02
+3;003;Rumah Bapak Supriyono;Dusun Kauman RT 01 RW 03
+4;004;SDN Kebondowo 02;Dusun Pundan RT 01 RW 04
+5;005;Balai Dusun Pundan;RT 01 RW 05
+6;006;Gedung LVRI Veteran;Dusun Kebonbawang RT 01 RW 06
+7;007;GOR Dusun Kebonbawang;RT 01 RW 07
+8;008;Rumah Bapak Sukamto;Dusun Kebondowo RT 04 RW 09
+9;009;Pondok Putri Paren;Dusun Kebondowo RT 03 RW 10
+10;010;Rumah Bapak Sutomo;Dusun Jrakah RT 02 RW 11
+11;011;Rumah Bapak Eko Setiyawan;Dusun Kebonsari RT 05 RW 12
